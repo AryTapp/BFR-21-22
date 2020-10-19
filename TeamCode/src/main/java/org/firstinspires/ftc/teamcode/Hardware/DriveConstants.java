@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive;
+package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
@@ -21,8 +21,8 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
-    public static final double TICKS_PER_REV = 1;
-    public static final double MAX_RPM = 1;
+    public static final double TICKS_PER_REV = 383.6;
+    public static final double MAX_RPM = 435;
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -33,7 +33,7 @@ public class DriveConstants {
      * MOTOR_VELO_PID with the tuned coefficients from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;
-    public static PIDCoefficients MOTOR_VELO_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients MOTOR_VELO_PID = new PIDCoefficients(1.178, 0.118, 0);
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -43,9 +43,10 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 2; // in
-    public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 1; // in
+    public static double WHEEL_RADIUS = 1.97;
+    public static double GEAR_RATIO = 0.5; // output (wheel) speed / input (motor) speed
+    public static double TRACK_WIDTH = 16.1;
+
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
