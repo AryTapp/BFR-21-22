@@ -30,6 +30,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Subsystem;
 import org.firstinspires.ftc.teamcode.Utility.DashboardUtil;
 import org.firstinspires.ftc.teamcode.Utility.LynxModuleUtil;
 
@@ -52,7 +54,7 @@ import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.kV;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class BFRMecanumDrive extends MecanumDrive {
+public class BFRMecanumDrive extends MecanumDrive implements Subsystem {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(5, 0, 0.5);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(5.5, 0, 0.5);
 
@@ -63,6 +65,16 @@ public class BFRMecanumDrive extends MecanumDrive {
     public static double OMEGA_WEIGHT = 1;
 
     public static int POSE_HISTORY_LIMIT = 100;
+
+    @Override
+    public void initialize(HardwareMap map, Telemetry telemetry) {
+
+    }
+
+    @Override
+    public void sendTelemetry(Telemetry telemetry) {
+
+    }
 
     public enum Mode {
         IDLE,
