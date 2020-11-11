@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Utility;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Main.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
 
 public abstract class FrogOpMode extends OpMode {
