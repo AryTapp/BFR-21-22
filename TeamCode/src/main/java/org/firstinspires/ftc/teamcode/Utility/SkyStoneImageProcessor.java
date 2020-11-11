@@ -4,7 +4,7 @@ import android.os.Environment;
 
 import com.acmerobotics.dashboard.config.Config;
 
-import org.firstinspires.ftc.teamcode.Main.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
