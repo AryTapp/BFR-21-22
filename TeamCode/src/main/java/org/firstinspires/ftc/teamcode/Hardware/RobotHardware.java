@@ -43,8 +43,8 @@ public class RobotHardware {
         drive = new BFRMecanumDrive(map);
         subsystems.add(drive);
 
-        bfrPhone = new BFRPhone();
-        subsystems.add(bfrPhone);
+        //bfrPhone = new BFRPhone();
+        //subsystems.add(bfrPhone);
 
         intake = new Intake();
         subsystems.add(intake);
