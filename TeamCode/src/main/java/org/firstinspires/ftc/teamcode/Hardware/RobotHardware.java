@@ -24,7 +24,6 @@ public class RobotHardware {
     public BFRMecanumDrive drive = null;
     public BFRPhone bfrPhone = null;
     public Intake intake = null;
-    private boolean initializationComplete = false;
 
     public ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 
@@ -33,9 +32,6 @@ public class RobotHardware {
     }
 
     public void initialize(HardwareMap map, Telemetry telemetry){
-
-        if(initializationComplete)
-            return;
 
         gyro = new Gyro();
         subsystems.add(gyro);
@@ -53,12 +49,9 @@ public class RobotHardware {
             subsystem.initialize(map, telemetry);
         }
 
-        initializationComplete = true;
     }
 
-     public boolean isInitializationComplete(){
-        return initializationComplete;
-     }
+
 
     public void sendTelemetry(Telemetry telemetry){
         for(Subsystem subsystem: subsystems){
