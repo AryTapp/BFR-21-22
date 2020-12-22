@@ -33,8 +33,7 @@ public class RobotHardware {
 
     public void initialize(HardwareMap map, Telemetry telemetry){
 
-        gyro = new Gyro();
-        subsystems.add(gyro);
+        subsystems.clear();
 
         drive = new BFRMecanumDrive(map);
         subsystems.add(drive);
