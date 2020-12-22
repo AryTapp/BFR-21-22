@@ -12,53 +12,29 @@ public class Intake implements Subsystem {
     /**
      * Motors declaration
      */
-    private DcMotor leftIntake;
-    private DcMotor rightIntake;
+    private DcMotor intakeMotor;
 
     /**
      * Motor configuration names
      */
-    private String liName = "li";
-    private String riName = "ri";
+    private String intake = "intake";
 
     /**
      * Motor variables
      */
-    private int directionSign = 1;
+    private int directionSign = -1;
 
 
     @Override
     public void initialize(HardwareMap map, Telemetry telemetry) {
-        leftIntake = map.dcMotor.get(liName);
-        rightIntake = map.dcMotor.get(riName);
+        intakeMotor = map.dcMotor.get(intake);
 
-
-    }
-
-    public void intakePower(double power){
-        leftIntake.setPower( power * directionSign);
-        rightIntake.setPower(power * directionSign);
-    }
-
-    public void intake(double time){
-        leftIntake.setPower( 1 * directionSign);
-        rightIntake.setPower(1 * directionSign);
-
-        try {
-            Thread.sleep((long)time);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        leftIntake.setPower( 0);
-        rightIntake.setPower(0);
 
     }
 
     //overload for intake function
     public void intake(double time, double power){
-        leftIntake.setPower( power * directionSign);
-        rightIntake.setPower(power * directionSign);
+        intakeMotor.setPower( power * directionSign);
 
         try {
             Thread.sleep((long)time);
@@ -66,40 +42,7 @@ public class Intake implements Subsystem {
             Thread.currentThread().interrupt();
         }
 
-        leftIntake.setPower( 0);
-        rightIntake.setPower(0);
-
-    }
-
-    public void outtake(double time){
-        leftIntake.setPower( -1 * directionSign);
-        rightIntake.setPower(-1 * directionSign);
-
-        try {
-            Thread.sleep((long)time);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        leftIntake.setPower( 0);
-        rightIntake.setPower(0);
-
-    }
-
-    //overload for intake function
-    public void outtake(double time, double power){
-        leftIntake.setPower(-power * directionSign);
-        rightIntake.setPower(-power * directionSign);
-
-        try {
-            Thread.sleep((long)time);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        leftIntake.setPower(0);
-        rightIntake.setPower(0);
-
+        intakeMotor.setPower(0);
     }
 
 
