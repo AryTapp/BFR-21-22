@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 @TeleOp
 public class Teleop extends FrogOpMode {
@@ -20,8 +21,10 @@ public class Teleop extends FrogOpMode {
     public void repeat()  {
         //telemetry.addData("Pigs", "%f, %f", gamepad1.left_stick_x, gamepad1.left_stick_y);
         //telemetry.update();
-        BFRMecanumDrive drive = RobotHardware.getInstance().drive;
+        RobotHardware robot = RobotHardware.getInstance();
+        BFRMecanumDrive drive = robot.drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake intake = robot.intake;
 
         // Create a vector from the gamepad x/y inputs
         // Then, rotate that vector by the inverse of that heading
@@ -39,6 +42,12 @@ public class Teleop extends FrogOpMode {
                         -gamepad1.right_stick_x
                 )
         );
+        if(gamepad1.right_bumper){
+            robot.intake.intake(0.1, 0.5);
+        }
+        if(gamepad1.left_bumper){
+            robot.intake.intake(0.1, -0.5);
+        }
 
     }
 }

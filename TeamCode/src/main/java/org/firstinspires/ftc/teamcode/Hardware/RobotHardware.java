@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.BFRPhone;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Basket;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Gyro;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Subsystem;
@@ -24,6 +25,7 @@ public class RobotHardware {
     public BFRMecanumDrive drive = null;
     public BFRPhone bfrPhone = null;
     public Intake intake = null;
+    public Basket basket = null;
 
     public ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 
@@ -37,6 +39,9 @@ public class RobotHardware {
 
         drive = new BFRMecanumDrive(map);
         subsystems.add(drive);
+
+        basket = new Basket();
+        subsystems.add(basket);
 
         //bfrPhone = new BFRPhone();
         //subsystems.add(bfrPhone);
