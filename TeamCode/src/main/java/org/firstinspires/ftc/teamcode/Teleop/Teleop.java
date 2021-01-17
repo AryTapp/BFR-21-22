@@ -49,6 +49,23 @@ public class Teleop extends FrogOpMode {
             robot.intake.intake(0.1, -0.5);
         }
 
+        if(gamepad2.dpad_up){
+            robot.basket.raiseBasket();
+        }
+
+        if(gamepad2.dpad_down){
+            robot.basket.lowerBasket();
+        }
+
+        if(gamepad2.dpad_left){
+            robot.basket.resetSwiper();
+        }
+
+        if(gamepad2.dpad_right){
+            robot.basket.swipe();
+        }
+
+
     }
 }
 

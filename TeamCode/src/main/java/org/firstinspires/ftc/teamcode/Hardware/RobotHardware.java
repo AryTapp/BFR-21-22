@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.BFRPhone;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Basket;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Gyro;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Subsystem;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class RobotHardware {
     public BFRPhone bfrPhone = null;
     public Intake intake = null;
     public Basket basket = null;
+    public Shooter shooter = null;
 
     public ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 
@@ -48,6 +50,9 @@ public class RobotHardware {
 
         intake = new Intake();
         subsystems.add(intake);
+        
+        shooter = new Shooter();
+        subsystems.add(shooter);
 
         for(Subsystem subsystem: subsystems){
             subsystem.initialize(map, telemetry);

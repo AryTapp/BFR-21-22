@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 @TeleOp
 public class ServoTest extends FrogOpMode {
+
     @Override
     public void initialize() {
 
@@ -14,9 +15,9 @@ public class ServoTest extends FrogOpMode {
     @Override
     public void repeat() {
         RobotHardware robot = RobotHardware.getInstance();
-        robot.basket.inclineServo.setPosition(0.05);
+        robot.basket.swipe();
 
-        robot.basket.swiperServo.setPosition(0.55);
+        robot.basket.raiseBasket();
 //
 //        telemetry.addData("incline servo position", inclineServoPos);
 //        telemetry.addData("swiper servo position", swiperServoPos);
