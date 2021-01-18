@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 @TeleOp
 public class Teleop extends FrogOpMode {
-    private double intakePower = 60;
+    private double intakePower = 80;
     private boolean intakeOn = false;
     private double shooterPower = 60;
     @Override
