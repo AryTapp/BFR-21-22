@@ -12,6 +12,9 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 @TeleOp
 public class Teleop extends FrogOpMode {
+    private double intakePower = 60;
+    private boolean intakeOn = false;
+    private double shooterPower = 60;
     @Override
     public void initialize() {
         BFRMecanumDrive drive = RobotHardware.getInstance().drive;
@@ -43,10 +46,10 @@ public class Teleop extends FrogOpMode {
                 )
         );
         if(gamepad1.right_bumper){
-            robot.intake.intake(0.1, 0.5);
+            robot.intake.intake(10, -intakePower);
         }
         if(gamepad1.left_bumper){
-            robot.intake.intake(0.1, -0.5);
+            robot.intake.intake(10, intakePower);
         }
 
         if(gamepad2.dpad_up){
@@ -65,6 +68,9 @@ public class Teleop extends FrogOpMode {
             robot.basket.swipe();
         }
 
+        if(gamepad2.left_bumper){
+            robot.shooter.shoot(10, shooterPower);
+        }
 
     }
 }
