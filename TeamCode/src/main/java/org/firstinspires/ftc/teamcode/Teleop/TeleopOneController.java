@@ -12,13 +12,16 @@ import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 
 @TeleOp
 public class TeleopOneController extends FrogOpMode {
-    private double intakePower = 80;
+    private double intakePower = 90;
     private boolean intakeOn = false;
     private double shooterPower = 60;
     @Override
     public void initialize() {
         BFRMecanumDrive drive = RobotHardware.getInstance().drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RobotHardware robot = RobotHardware.getInstance();
+        robot.basket.lowerBasket();
+        robot.basket.resetSwiper();
     }
     @Override
     public void repeat()  {

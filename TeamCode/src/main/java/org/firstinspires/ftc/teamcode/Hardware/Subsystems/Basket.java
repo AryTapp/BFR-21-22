@@ -8,10 +8,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Basket implements Subsystem{
 
     private static double swiperStart = 0.55;
-    private static double swiperEnd = 0.26;
+    private static double swiperEnd = 0.23; //0.26
 
-    private static double lowerBasket = 0.09;
-    private static double raiseBasket = 0.22;
+    private static double lowerBasket = 0.13; //0.09
+    private static double raiseBasket = 0.25; //0.22
 
 
     public Servo inclineServo;
