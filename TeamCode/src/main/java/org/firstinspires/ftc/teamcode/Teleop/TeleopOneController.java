@@ -35,8 +35,8 @@ public class TeleopOneController extends FrogOpMode {
         // Create a vector from the gamepad x/y inputs
         // Then, rotate that vector by the inverse of that heading
         Vector2d input = new Vector2d(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x)
+                gamepad1.left_stick_x,
+                -gamepad1.left_stick_y)
                 .rotated(-drive.getRawExternalHeading());
 
         // Pass in the rotated input + right stick value for rotation
@@ -45,7 +45,7 @@ public class TeleopOneController extends FrogOpMode {
                 new Pose2d(
                         input.getX(),
                         input.getY(),
-                        -gamepad1.right_stick_x
+                        -gamepad1.right_stick_y
                 )
         );
         if(gamepad1.right_bumper){

@@ -10,8 +10,8 @@ public class Basket implements Subsystem{
     private static double swiperStart = 0.55;
     private static double swiperEnd = 0.23; //0.26
 
-    private static double lowerBasket = 0.13; //0.09
-    private static double raiseBasket = 0.25; //0.22
+    private static double lowerBasket = 0.08; //0.09
+    private static double raiseBasket = 0.22; //0.22
 
 
     public Servo inclineServo;
@@ -24,6 +24,8 @@ public class Basket implements Subsystem{
     public void initialize(HardwareMap map, Telemetry telemetry) {
         inclineServo = map.servo.get(inclineName);
         swiperServo = map.servo.get(swiperName);
+        lowerBasket();
+        resetSwiper();
 
     }
     public void swipe(){

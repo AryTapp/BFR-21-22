@@ -42,7 +42,7 @@ public class Teleop extends FrogOpMode {
                 new Pose2d(
                         input.getX(),
                         input.getY(),
-                        -gamepad1.right_stick_x
+                        -gamepad1.right_stick_y
                 )
         );
         if(gamepad1.right_bumper){
