@@ -24,7 +24,7 @@ public class Basket implements Subsystem{
     public void initialize(HardwareMap map, Telemetry telemetry) {
         inclineServo = map.servo.get(inclineName);
         swiperServo = map.servo.get(swiperName);
-        lowerBasket();
+        raiseBasket();
         resetSwiper();
 
     }
