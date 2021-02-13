@@ -19,6 +19,8 @@ public class Teleop extends FrogOpMode {
     public void initialize() {
         BFRMecanumDrive drive = RobotHardware.getInstance().drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RobotHardware robot = RobotHardware.getInstance();
+        robot.wobbleGoalArm.liftArmServo.setPosition(0.1);
     }
     @Override
     public void repeat()  {
@@ -32,8 +34,8 @@ public class Teleop extends FrogOpMode {
         // Create a vector from the gamepad x/y inputs
         // Then, rotate that vector by the inverse of that heading
         Vector2d input = new Vector2d(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x)
+                gamepad1.left_stick_x,
+                -gamepad1.left_stick_y)
                 .rotated(-drive.getRawExternalHeading());
 
         // Pass in the rotated input + right stick value for rotation
@@ -72,6 +74,23 @@ public class Teleop extends FrogOpMode {
             robot.shooter.shoot(10, shooterPower);
         }
 
+        // if stick up, raise arm
+        if(gamepad2.left_stick_y < 0){
+            robot.wobbleGoalArm.raiseArm();
+        }
+        if(gamepad2.left_stick_y > 0){
+            robot.wobbleGoalArm.lowerArm();
+        }
+        if(gamepad2.y){
+            robot.wobbleGoalArm.armBack();
+        }
+
+        if(gamepad2.x){
+            robot.wobbleGoalArm.release();
+        }
+        if(gamepad2.b){
+            robot.wobbleGoalArm.grab();
+        }
     }
 }
 

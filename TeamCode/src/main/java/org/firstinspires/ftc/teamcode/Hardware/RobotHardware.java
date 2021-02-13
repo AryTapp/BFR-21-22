@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Gyro;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Subsystem;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.WobbleGoalArm;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class RobotHardware {
     public Intake intake = null;
     public Basket basket = null;
     public Shooter shooter = null;
+    public WobbleGoalArm wobbleGoalArm = null;
 
     public ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 
@@ -53,6 +55,9 @@ public class RobotHardware {
         
         shooter = new Shooter();
         subsystems.add(shooter);
+
+        wobbleGoalArm = new WobbleGoalArm();
+        subsystems.add(wobbleGoalArm);
 
         for(Subsystem subsystem: subsystems){
             subsystem.initialize(map, telemetry);

@@ -8,10 +8,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Basket implements Subsystem{
 
     private static double swiperStart = 0.55;
-    private static double swiperEnd = 0.23; //0.26
+    private static double swiperEnd = 0.23;
 
-    private static double lowerBasket = 0.08; //0.09
-    private static double raiseBasket = 0.22; //0.22
+    private static double lowerBasket = 0.08;
+    private static double raiseBasket = 0.22;
 
 
     public Servo inclineServo;
@@ -31,7 +31,6 @@ public class Basket implements Subsystem{
     public void swipe(){
         swiperServo.setPosition(swiperEnd);
     }
-
     public void resetSwiper(){
         swiperServo.setPosition(swiperStart);
     }
@@ -39,7 +38,6 @@ public class Basket implements Subsystem{
     public void raiseBasket(){
         inclineServo.setPosition(raiseBasket);
     }
-
     public void lowerBasket(){
         inclineServo.setPosition(lowerBasket);
     }

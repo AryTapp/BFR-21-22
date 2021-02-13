@@ -25,8 +25,6 @@ public class TeleopOneController extends FrogOpMode {
     }
     @Override
     public void repeat()  {
-        //telemetry.addData("Pigs", "%f, %f", gamepad1.left_stick_x, gamepad1.left_stick_y);
-        //telemetry.update();
         RobotHardware robot = RobotHardware.getInstance();
         BFRMecanumDrive drive = robot.drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

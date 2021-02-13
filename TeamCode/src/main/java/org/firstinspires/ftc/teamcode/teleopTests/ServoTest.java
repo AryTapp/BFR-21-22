@@ -11,24 +11,47 @@ import static android.os.SystemClock.sleep;
 
 @TeleOp
 public class ServoTest extends FrogOpMode {
+    RobotHardware robot = RobotHardware.getInstance();
+    private static double liftArmServoPos = 0;
+    private static double gripperServoPos = 0;
 
     @Override
     public void initialize() {
-        RobotHardware robot = RobotHardware.getInstance();
-
-//        robot.basket.inclineServo.setDirection(Servo.Direction.REVERSE);
-        robot.basket.inclineServo.setPosition(0.08);
-        sleep(2000);
-        robot.basket.inclineServo.setPosition(0.22);
-
+        robot.wobbleGoalArm.liftArmServo.setPosition(0.5);
     }
 
     @Override
     public void repeat() {
+        if(gamepad1.left_stick_y > 0){
+            liftArmServoPos = liftArmServoPos + 0.01;
+            if(liftArmServoPos > 1){
+                liftArmServoPos = 1;
+            }
+        }
+        else if(gamepad1.left_stick_y < 0){
+            liftArmServoPos = liftArmServoPos - 0.01;
+            if(liftArmServoPos < 0){
+                liftArmServoPos = 0;
+            }
+        }
+        robot.wobbleGoalArm.liftArmServo.setPosition(liftArmServoPos);
 
-//        telemetry.addData("incline servo position", inclineServoPos);
-//        telemetry.addData("swiper servo position", swiperServoPos);
-//        telemetry.update()
-        //0.05 and 0.55 are the starting positions for the incline and swiper servos
+        if(gamepad1.right_stick_y > 0){
+            gripperServoPos = gripperServoPos + 0.01;
+            if(gripperServoPos > 1) {
+                gripperServoPos = 1;
+            }
+        }
+        else if(gamepad1.right_stick_y < 0) {
+            gripperServoPos = gripperServoPos - 0.01;
+            if(gripperServoPos < 0) {
+                gripperServoPos = 0;
+            }
+        }
+        robot.wobbleGoalArm.gripperServo.setPosition(gripperServoPos);
+
+        telemetry.addData("liftArmServoPos", liftArmServoPos);
+        telemetry.addData("gripperServoPos", gripperServoPos);
+        telemetry.update();
     }
 }
