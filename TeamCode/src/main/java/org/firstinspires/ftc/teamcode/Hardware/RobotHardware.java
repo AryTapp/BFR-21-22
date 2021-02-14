@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.BFRPhone;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Basket;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Gyro;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Phone;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Subsystem;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.WobbleGoalArm;
@@ -30,6 +31,7 @@ public class RobotHardware {
     public Basket basket = null;
     public Shooter shooter = null;
     public WobbleGoalArm wobbleGoalArm = null;
+    public Phone phone = null;
 
     public ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 
@@ -47,9 +49,6 @@ public class RobotHardware {
         basket = new Basket();
         subsystems.add(basket);
 
-        //bfrPhone = new BFRPhone();
-        //subsystems.add(bfrPhone);
-
         intake = new Intake();
         subsystems.add(intake);
         
@@ -58,6 +57,9 @@ public class RobotHardware {
 
         wobbleGoalArm = new WobbleGoalArm();
         subsystems.add(wobbleGoalArm);
+
+        phone = new Phone();
+        subsystems.add(phone);
 
         for(Subsystem subsystem: subsystems){
             subsystem.initialize(map, telemetry);

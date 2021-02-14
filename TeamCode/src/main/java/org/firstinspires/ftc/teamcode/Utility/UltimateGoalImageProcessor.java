@@ -4,20 +4,13 @@ import android.os.Environment;
 
 import com.acmerobotics.dashboard.config.Config;
 
-import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -33,37 +26,26 @@ import static java.lang.Thread.sleep;
  */
 
 @Config
-public class SkyStoneImageProcessor {
+public class UltimateGoalImageProcessor {
 
-    private static SkyStoneImageProcessor redInstance = new SkyStoneImageProcessor(true);
-    private static SkyStoneImageProcessor blueInstance = new SkyStoneImageProcessor(false);
-    public static SkyStoneImageProcessor getInstance(boolean onRed){
-        return onRed ? redInstance : blueInstance;
+    private static UltimateGoalImageProcessor processor = new UltimateGoalImageProcessor();
+    public static UltimateGoalImageProcessor getInstance(){
+        return processor;
     }
 
     private int sizeThresh = 70000;
     private int lrTolerance = 10;
     public static double blurAmount = 10;
 
-    boolean red = true;
 
     static {
 //        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    public SkyStoneImageProcessor(boolean isRed) {
-        red = isRed;
-    }
-
-    public SkyStoneImageProcessor() {
-        red = true;
+    public UltimateGoalImageProcessor() {
     }
 
     public ImageResult process(Mat source0) {
-
-        //CONVERT TO BGR
-        Imgproc.cvtColor(source0,source0,Imgproc.COLOR_RGB2BGR);
-
 
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String filename = "Orig.jpg";
@@ -73,17 +55,11 @@ public class SkyStoneImageProcessor {
         //Crop the image
         Mat cropInput = source0;
         Mat cropOutput = new Mat();
-        int widthLeft = (int) Math.round(source0.width() * 0.60);
-        int widthRight = (int) Math.round(source0.width() * 0.8);
-        int heightDown;
-        int heightUp;
-        if(red) {
-            heightDown = (int) Math.round(source0.height() * 0.1);
-            heightUp = (int) Math.round(source0.height() * 0.8);
-        }else{
-            heightDown = (int) Math.round(0);
-            heightUp = (int) Math.round(source0.height() * 0.7);
-        }
+        int widthLeft = (int) Math.round(source0.width() * 0.59);
+        int widthRight = (int) Math.round(source0.width() * 0.78);
+        int heightDown = (int) Math.round(source0.height() * 0.27);
+        int heightUp = (int) Math.round(source0.height() * 0.69);
+
 
         cropOutput = cropInput.submat(heightDown,heightUp, widthLeft, widthRight);
 
@@ -135,27 +111,6 @@ public class SkyStoneImageProcessor {
 
         double left = getValueBySide(true, bwOutput);
         double right = getValueBySide(false, bwOutput);
-
-        imageResult.leftAvg = left;
-        imageResult.rightAvg = right;
-
-        if(Math.abs(right - left) < lrTolerance){
-            if(red){
-                imageResult.stonePos = 6;
-            }else{
-                imageResult.stonePos = 4;
-            }
-        }else if(right>left){
-            if(red){
-                imageResult.stonePos = 4;
-            }else{
-                imageResult.stonePos = 6;
-            }
-        }else{
-            imageResult.stonePos = 5;
-        }
-
-
 
         return imageResult;
 
