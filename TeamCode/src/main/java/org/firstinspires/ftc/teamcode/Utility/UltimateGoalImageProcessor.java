@@ -52,13 +52,21 @@ public class UltimateGoalImageProcessor {
         File file = new File(path, filename);
         Imgcodecs.imwrite(file.toString(), source0);
 
+        Mat gray = new Mat();
+        Mat canny = new Mat();
+        Imgproc.cvtColor(source0, gray, Imgproc.COLOR_BGR2GRAY); //convert roi into gray
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        filename = "gray.jpg";
+        file = new File(path, filename);
+        Imgcodecs.imwrite(file.toString(), gray);
+
         //Crop the image
-        Mat cropInput = source0;
+        Mat cropInput = gray;
         Mat cropOutput = new Mat();
         int widthLeft = (int) Math.round(source0.width() * 0.59);
         int widthRight = (int) Math.round(source0.width() * 0.78);
-        int heightDown = (int) Math.round(source0.height() * 0.27);
-        int heightUp = (int) Math.round(source0.height() * 0.69);
+        int heightDown = (int) Math.round(source0.height() * 0.23);
+        int heightUp = (int) Math.round(source0.height() * 0.64);
 
 
         cropOutput = cropInput.submat(heightDown,heightUp, widthLeft, widthRight);
@@ -81,6 +89,23 @@ public class UltimateGoalImageProcessor {
         Imgcodecs.imwrite(file.toString(), rotateOutput);
 
         // Step Blur0:®
+       /* Mat blurInput = rotateOutput;
+        BlurType blurType = BlurType.get("Box Blur");
+        double blurRadius = blurAmount;
+        Mat blurOutput = new Mat();
+        blur(blurInput, blurType, blurRadius, blurOutput);
+*/
+/*        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        filename = "Blur.jpg";
+        file = new File(path, filename);
+        Imgcodecs.imwrite(file.toString(), blurOutput);*/
+
+
+        //CONVERT TO HSV
+
+
+/*
+        // Step Blur0:®
         Mat blurInput = rotateOutput;
         BlurType blurType = BlurType.get("Box Blur");
         double blurRadius = blurAmount;
@@ -93,11 +118,15 @@ public class UltimateGoalImageProcessor {
         Imgcodecs.imwrite(file.toString(), blurOutput);
 
 
-        //CONVERT TO HSV
-        Imgproc.cvtColor(source0,source0,Imgproc.COLOR_BGR2HSV);
+        Imgproc.Canny(blurOutput, canny,10,50);//apply canny to roi
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        filename = "canny.jpg";
+        file = new File(path, filename);
+        Imgcodecs.imwrite(file.toString(), canny);
+*/
 
         //Convert to black and white
-        Mat bwInput = blurOutput;
+        Mat bwInput = rotateOutput;
         Mat bwOutput = new Mat();
 
         desaturate(bwInput, bwOutput);
@@ -108,9 +137,6 @@ public class UltimateGoalImageProcessor {
         Imgcodecs.imwrite(file.toString(), bwOutput);
 
         ImageResult imageResult = new ImageResult();
-
-        double left = getValueBySide(true, bwOutput);
-        double right = getValueBySide(false, bwOutput);
 
         return imageResult;
 

@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.CameraDevice;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.Vuforia;
@@ -314,6 +315,8 @@ public class Phone implements Subsystem {
 
     //taking pictures
     public Mat getMat(){
+        CameraDevice.getInstance().setFlashTorchMode(true) ;
+
         //*****************MAY Already be Done As Part of VUFORIA Initialization*******
         Vuforia.setFrameFormat(PIXEL_FORMAT.RGB565, true); //enables RGB565 format for the image
         vuforia.setFrameQueueCapacity(4); //tells VuforiaLocalizer to only store one frame at a time
