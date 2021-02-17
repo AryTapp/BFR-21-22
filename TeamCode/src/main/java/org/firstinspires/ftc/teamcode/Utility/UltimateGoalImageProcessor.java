@@ -11,6 +11,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
@@ -137,6 +138,20 @@ public class UltimateGoalImageProcessor {
         Imgcodecs.imwrite(file.toString(), bwOutput);
 
         ImageResult imageResult = new ImageResult();
+        imageResult.numberOfRings = 0;
+
+        Random rand = new Random();
+        int random = rand.nextInt(3);
+
+        if(random == 0){
+            imageResult.numberOfRings = 0;
+        }
+        else if(random == 1){
+            imageResult.numberOfRings = 1;
+        }
+        else{
+            imageResult.numberOfRings = 4;
+        }
 
         return imageResult;
 

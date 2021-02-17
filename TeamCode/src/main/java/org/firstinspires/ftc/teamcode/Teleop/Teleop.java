@@ -82,7 +82,7 @@ public class Teleop extends FrogOpMode {
             robot.wobbleGoalArm.lowerArm();
         }
         if(gamepad2.y){
-            robot.wobbleGoalArm.armBack();
+            robot.wobbleGoalArm.initArm();
         }
 
         if(gamepad2.x){

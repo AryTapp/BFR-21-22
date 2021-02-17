@@ -9,10 +9,11 @@ public class WobbleGoalArm implements Subsystem {
 
     private static double lowerArmPos = 0.60;
     private static double raiseArmPos = 0.22;
-    private static double initArmPos = 0.00;
+    private static double initArmPos = 0.12;
 
-    private static double grabPos = 0.64;
-    private static double releasePos = 0.90;
+    private static double grabPos = 0.90;
+    private static double releasePos = 0.64;
+    private static double halfOpenPos = 0.83;
 
     public Servo liftArmServo;
     private String liftArmName = "liftArmServo";
@@ -32,7 +33,7 @@ public class WobbleGoalArm implements Subsystem {
     public void raiseArm(){
         liftArmServo.setPosition(raiseArmPos);
     }
-    public void armBack(){
+    public void initArm(){
         liftArmServo.setPosition(initArmPos);
     }
 
@@ -41,6 +42,14 @@ public class WobbleGoalArm implements Subsystem {
     }
     public void release(){
         gripperServo.setPosition(releasePos);
+    }
+    public void halfOpen(){
+        gripperServo.setPosition(halfOpenPos);
+    }
+
+    public void initWobble(){
+        initArm();
+        halfOpen();
     }
 
     @Override

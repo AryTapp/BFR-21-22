@@ -362,6 +362,8 @@ public class Phone implements Subsystem {
         File file = new File(path, filename);
         Imgcodecs.imwrite(file.toString(), m);
 
+        CameraDevice.getInstance().setFlashTorchMode(false) ;
+
         return m;
     }
 
