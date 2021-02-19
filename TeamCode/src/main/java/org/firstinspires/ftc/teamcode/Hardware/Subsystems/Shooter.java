@@ -14,6 +14,7 @@ public class Shooter implements Subsystem{
 
     public void initialize(HardwareMap map, Telemetry telemetry) {
         shooterMotor = map.dcMotor.get(shooterName);
+        shooterMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void shoot(double time, double power){
@@ -26,7 +27,6 @@ public class Shooter implements Subsystem{
 
         shooterMotor.setPower(0);
     }
-
 
     @Override
     public void sendTelemetry(Telemetry telemetry) {
