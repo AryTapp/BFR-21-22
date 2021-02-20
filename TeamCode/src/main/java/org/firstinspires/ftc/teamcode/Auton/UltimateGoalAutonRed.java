@@ -20,7 +20,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
 
     ImageResult imageResult = null;
-    static double shooterPower = 0.74;
+    static double shooterPower = 0.70;
     @Override
     public void initialize() {
         robot = RobotHardware.getInstance();
@@ -42,10 +42,25 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         telemetry.update();
 
         Trajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
+                .strafeTo(new Vector2d(40, 16))
+                .build();
+
+        Trajectory trajectory2 = robot.drive.trajectoryBuilder(new Pose2d(40, 16))
+                .strafeTo(new Vector2d(63, -8))
+                .build();
+
+        robot.drive.followTrajectory(trajectory);
+
+        robot.shooter.shooterMotor.setPower(shooterPower);
+
+        robot.drive.followTrajectory(trajectory2);
+/*
+        Trajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
                 .strafeTo(new Vector2d(62, -8))
                 .build();
 
         robot.drive.followTrajectory(trajectory);
+*/
 
         shootThreeRings();
 
@@ -63,11 +78,11 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
             yOffset += 0;
             xParkOffset -= 48;
         }
-        Trajectory trajectory2 = robot.drive.trajectoryBuilder(new Pose2d(62, -8))
+        Trajectory trajectory3 = robot.drive.trajectoryBuilder(new Pose2d(63, -8))
                 .strafeTo(new Vector2d(xOffset, yOffset))
                 .build();
 
-        robot.drive.followTrajectory(trajectory2);
+        robot.drive.followTrajectory(trajectory3);
 
         robot.wobbleGoalArm.lowerArm();
         sleep(500);
@@ -75,17 +90,17 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
         sleep(1000);
 
-        Trajectory trajectory3 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
+        Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
                 .strafeTo(new Vector2d(xParkOffset + xOffset, yOffset))
                 .build();
 
-        robot.drive.followTrajectory(trajectory3);
+        robot.drive.followTrajectory(trajectory4);
     }
 
     void shootThreeRings(){
-        robot.shooter.shooterMotor.setPower(shooterPower);
+/*        robot.shooter.shooterMotor.setPower(shooterPower);
 
-        sleep(3000);
+        sleep(3000);*/
 
         robot.basket.swipe();
 
