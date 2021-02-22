@@ -14,7 +14,11 @@ import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 public class Teleop extends FrogOpMode {
     private double intakePower = 80;
     private boolean intakeOn = false;
-    private double shooterPower = 60;
+    private double highGoalPower = .70;
+    private double powerShotPower = .68;
+    private double shooterPower = highGoalPower;
+    private boolean shooterStatus = false;
+
     @Override
     public void initialize() {
         BFRMecanumDrive drive = RobotHardware.getInstance().drive;
@@ -71,7 +75,31 @@ public class Teleop extends FrogOpMode {
         }
 
         if(gamepad2.left_bumper){
-            robot.shooter.shoot(10, shooterPower);
+            if(shooterStatus){
+                shooterStatus = false;
+            }
+            else{
+                shooterStatus = true;
+            }
+        }
+
+        if(gamepad2.a){
+            if(shooterPower == highGoalPower){
+                shooterPower = powerShotPower;
+            }
+            else{
+                shooterPower = highGoalPower;
+            }
+        }
+
+        telemetry.addData("power", shooterPower);
+        telemetry.update();
+
+        if(shooterStatus){
+            robot.shooter.shooterMotor.setPower(shooterPower);
+        }
+        else{
+            robot.shooter.shooterMotor.setPower(0);
         }
 
         // if stick up, raise arm
@@ -91,6 +119,7 @@ public class Teleop extends FrogOpMode {
         if(gamepad2.b){
             robot.wobbleGoalArm.grab();
         }
+
     }
 }
 
