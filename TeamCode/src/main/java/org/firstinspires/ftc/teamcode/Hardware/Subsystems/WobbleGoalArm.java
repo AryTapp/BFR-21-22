@@ -12,7 +12,7 @@ public class WobbleGoalArm implements Subsystem {
     private static double initArmPos = 0.12;
 
     private static double grabPos = 0.90;
-    private static double releasePos = 0.64;
+    private static double releasePos = 0.57;
     private static double halfOpenPos = 0.83;
 
     public Servo liftArmServo;
