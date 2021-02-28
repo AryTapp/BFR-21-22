@@ -89,48 +89,11 @@ public class UltimateGoalImageProcessor {
         file = new File(path, filename);
         Imgcodecs.imwrite(file.toString(), rotateOutput);
 
-        // Step Blur0:®
-       /* Mat blurInput = rotateOutput;
-        BlurType blurType = BlurType.get("Box Blur");
-        double blurRadius = blurAmount;
-        Mat blurOutput = new Mat();
-        blur(blurInput, blurType, blurRadius, blurOutput);
-*/
-/*        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        filename = "Blur.jpg";
-        file = new File(path, filename);
-        Imgcodecs.imwrite(file.toString(), blurOutput);*/
-
-
-        //CONVERT TO HSV
-
-
-/*
-        // Step Blur0:®
-        Mat blurInput = rotateOutput;
-        BlurType blurType = BlurType.get("Box Blur");
-        double blurRadius = blurAmount;
-        Mat blurOutput = new Mat();
-        blur(blurInput, blurType, blurRadius, blurOutput);
-
-        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        filename = "Blur.jpg";
-        file = new File(path, filename);
-        Imgcodecs.imwrite(file.toString(), blurOutput);
-
-
-        Imgproc.Canny(blurOutput, canny,10,50);//apply canny to roi
-        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        filename = "canny.jpg";
-        file = new File(path, filename);
-        Imgcodecs.imwrite(file.toString(), canny);
-*/
 
         //Convert to black and white
         Mat bwInput = rotateOutput;
         Mat bwOutput = new Mat();
-
-        desaturate(bwInput, bwOutput);
+        Imgproc.threshold(bwInput, bwOutput, 160, 255, Imgproc.THRESH_BINARY);
 
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         filename = "Bw.jpg";
@@ -138,126 +101,39 @@ public class UltimateGoalImageProcessor {
         Imgcodecs.imwrite(file.toString(), bwOutput);
 
         ImageResult imageResult = new ImageResult();
-        imageResult.numberOfRings = 0;
+        imageResult.numberOfRings = -1;
 
-        Random rand = new Random();
-        int random = rand.nextInt(3);
+        int topWhiteCount = 0;
+        int bottomWhiteCount = 0;
 
-        if(random == 0){
+        for (int i = 0; i < bwOutput.height(); i++) {
+            for (int j = 0; j < bwOutput.width(); j++) {
+                double pixelValue = bwOutput.get(i, j)[0];
+                if(pixelValue == 255) {
+                    if(i < bwOutput.height()/2) {
+                        topWhiteCount ++;
+                    }
+                    else {
+                        bottomWhiteCount ++;
+                    }
+                }
+            }
+        }
+
+        if(topWhiteCount < 100 && bottomWhiteCount < 100) {
             imageResult.numberOfRings = 0;
         }
-        else if(random == 1){
-            imageResult.numberOfRings = 1;
-        }
-        else{
+        else if(topWhiteCount > bottomWhiteCount + 500) {
             imageResult.numberOfRings = 4;
+        }
+        else {
+            imageResult.numberOfRings = 1;
         }
 
         return imageResult;
 
     }
 
-    public int getValueBySide(boolean left, Mat inputMat){
-        int imgWidth = inputMat.width();
-        int imgHeight = inputMat.height();
-        double sum = 0;
-        int offset = left ? 0: imgWidth/2;
-        int count = 0;
-
-
-        for(int rows = 0; rows < imgHeight; rows += 5){
-            for(int cols = offset; cols < ((imgWidth/2) + offset); cols += 5){
-                sum += inputMat.get(rows,cols)[0];
-                count ++;
-            }
-        }
-
-        return (int)(sum/count);
-
-
-    }
-
-    /**
-     * An indication of which type of filter to use for a blur.
-     * Choices are BOX, GAUSSIAN, MEDIAN, and BILATERAL
-     */
-    enum BlurType{
-        BOX("Box Blur"), GAUSSIAN("Gaussian Blur"), MEDIAN("Median Filter"),
-        BILATERAL("Bilateral Filter");
-
-        private final String label;
-
-        BlurType(String label) {
-            this.label = label;
-        }
-
-        public static BlurType get(String type) {
-            if (BILATERAL.label.equals(type)) {
-                return BILATERAL;
-            }
-            else if (GAUSSIAN.label.equals(type)) {
-                return GAUSSIAN;
-            }
-            else if (MEDIAN.label.equals(type)) {
-                return MEDIAN;
-            }
-            else {
-                return BOX;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return this.label;
-        }
-    }
-
-    /**
-     * Softens an image using one of several filters.
-     * @param input The image on which to perform the blur.
-     * @param type The blurType to perform.
-     * @param doubleRadius The radius for the blur.
-     * @param output The image in which to store the output.
-     */
-    private void blur(Mat input, BlurType type, double doubleRadius,
-                      Mat output) {
-        int radius = (int)(doubleRadius + 0.5);
-        int kernelSize;
-        switch(type){
-            case BOX:
-                kernelSize = 2 * radius + 1;
-                Imgproc.blur(input, output, new Size(kernelSize, kernelSize));
-                break;
-            case GAUSSIAN:
-                kernelSize = 6 * radius + 1;
-                Imgproc.GaussianBlur(input,output, new Size(kernelSize, kernelSize), radius);
-                break;
-            case MEDIAN:
-                kernelSize = 2 * radius + 1;
-                Imgproc.medianBlur(input, output, kernelSize);
-                break;
-            case BILATERAL:
-                Imgproc.bilateralFilter(input, output, -1, radius, radius);
-                break;
-        }
-    }
-
-    private void desaturate(Mat input, Mat output) {
-        switch (input.channels()) {
-            case 1:
-                // If the input is already one channel, it's already desaturated
-                input.copyTo(output);
-                break;
-            case 3:
-                Imgproc.cvtColor(input, output, Imgproc.COLOR_BGR2GRAY);
-                break;
-            case 4:
-                Imgproc.cvtColor(input, output, Imgproc.COLOR_BGRA2GRAY);
-                break;
-            default:
-                throw new IllegalArgumentException("Input to desaturate must have 1, 3, or 4 channels");
-        }
-    }
-
 }
+
 

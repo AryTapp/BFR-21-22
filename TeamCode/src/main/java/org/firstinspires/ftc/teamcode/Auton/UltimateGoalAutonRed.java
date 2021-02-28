@@ -26,13 +26,14 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot = RobotHardware.getInstance();
         robot.wobbleGoalArm.initWobble();
 
-        Mat picture = robot.phone.getMat();
-        UltimateGoalImageProcessor processor = UltimateGoalImageProcessor.getInstance();
-        imageResult = processor.process(picture);
     }
 
     @Override
     public void run() {
+        Mat picture = robot.phone.getMat();
+        UltimateGoalImageProcessor processor = UltimateGoalImageProcessor.getInstance();
+        imageResult = processor.process(picture);
+
         robot.wobbleGoalArm.grab();
 
         robot.basket.resetSwiper();
