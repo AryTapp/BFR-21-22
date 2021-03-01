@@ -25,6 +25,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     public void initialize() {
         robot = RobotHardware.getInstance();
         robot.wobbleGoalArm.initWobble();
+        robot.basket.lowerBasket();
 
     }
 
