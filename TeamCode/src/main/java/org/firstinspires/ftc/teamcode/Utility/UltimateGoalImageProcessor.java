@@ -11,6 +11,8 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static java.lang.Thread.sleep;
@@ -46,16 +48,25 @@ public class UltimateGoalImageProcessor {
     public UltimateGoalImageProcessor() {
     }
 
-    public ImageResult process(Mat source0) {
+    public ImageResult process(Mat input) {
 
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String filename = "Orig.jpg";
         File file = new File(path, filename);
-        Imgcodecs.imwrite(file.toString(), source0);
+        Imgcodecs.imwrite(file.toString(), input);
 
-        Mat gray = new Mat();
-        Mat canny = new Mat();
-        Imgproc.cvtColor(source0, gray, Imgproc.COLOR_BGR2GRAY); //convert roi into gray
+        //Rotate the Image
+
+        Core.rotate(input, input, Core.ROTATE_90_CLOCKWISE);
+
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        filename = "Rotate.jpg";
+        file = new File(path, filename);
+        Imgcodecs.imwrite(file.toString(), input);
+
+        List<Mat> bgr = new ArrayList<>();
+        Core.split(input, bgr);
+        Mat gray = bgr.get(2);
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         filename = "gray.jpg";
         file = new File(path, filename);
@@ -64,36 +75,20 @@ public class UltimateGoalImageProcessor {
         //Crop the image
         Mat cropInput = gray;
         Mat cropOutput = new Mat();
-        int widthLeft = (int) Math.round(source0.width() * 0.59);
-        int widthRight = (int) Math.round(source0.width() * 0.78);
-        int heightDown = (int) Math.round(source0.height() * 0.23);
-        int heightUp = (int) Math.round(source0.height() * 0.64);
-
-
+        int widthLeft = (int) Math.round(input.width() * 0.36);
+        int widthRight = (int) Math.round(input.width() * 0.77);
+        int heightDown = (int) Math.round(input.height() * 0.59);
+        int heightUp = (int) Math.round(input.height() * 0.78);
         cropOutput = cropInput.submat(heightDown,heightUp, widthLeft, widthRight);
-
-
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         filename = "Crop.jpg";
         file = new File(path, filename);
         Imgcodecs.imwrite(file.toString(), cropOutput);
 
-        //Rotate the Image
-        Mat rotateInput = cropOutput;
-        Mat rotateOutput = new Mat();
-
-        Core.rotate(rotateInput, rotateOutput, Core.ROTATE_90_CLOCKWISE);
-
-        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        filename = "Rotate.jpg";
-        file = new File(path, filename);
-        Imgcodecs.imwrite(file.toString(), rotateOutput);
-
-
         //Convert to black and white
-        Mat bwInput = rotateOutput;
+        Mat bwInput = cropOutput;
         Mat bwOutput = new Mat();
-        Imgproc.threshold(bwInput, bwOutput, 160, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(bwInput, bwOutput, 200, 255, Imgproc.THRESH_BINARY);
 
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         filename = "Bw.jpg";
