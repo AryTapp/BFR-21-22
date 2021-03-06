@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 @TeleOp
 public class Teleop extends FrogOpMode {
 
-    private double intakePower = 80;
+    private double intakePower = 1;
     private boolean intakeOn = false;
     private double highGoalPower = .70;
     private double powerShotPower = .67;
@@ -102,6 +102,15 @@ public class Teleop extends FrogOpMode {
             robot.shooter.shooterMotor.setPower(0);
             telemetry.addData("shooter: ", "off");
         }
+
+
+        if(gamepad1.a) {
+            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
+                drive.turn(0 - robot.drive.getRawExternalHeading());
+            }
+        }
+
+
 
         // if stick up, raise arm
         if(gamepad2.left_stick_y < 0){

@@ -38,7 +38,6 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.wobbleGoalArm.grab();
 
         robot.basket.resetSwiper();
-        robot.basket.raiseBasket();
 
         telemetry.addData("number of rings:", imageResult.numberOfRings);
         telemetry.update();
@@ -52,6 +51,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
                 .build();
 
         robot.drive.followTrajectory(trajectory);
+
+        robot.basket.raiseBasket();
 
         robot.shooter.shooterMotor.setPower(shooterPower);
 
