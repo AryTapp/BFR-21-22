@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode.Hardware;
 
 //import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Hardware.Subsystems.BFRPhone;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Basket;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Gyro;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
