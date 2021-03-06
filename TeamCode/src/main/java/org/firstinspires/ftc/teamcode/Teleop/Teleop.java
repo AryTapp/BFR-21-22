@@ -10,6 +10,10 @@ import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
+import org.firstinspires.ftc.teamcode.Utility.RobotPosition;
+
+import static android.os.SystemClock.sleep;
+
 @TeleOp
 public class Teleop extends FrogOpMode {
 
@@ -19,6 +23,9 @@ public class Teleop extends FrogOpMode {
     private double powerShotPower = .67;
     private double shooterPower = highGoalPower;
     private boolean shooterStatus = false;
+    double lastRobotPositionX = 0;
+    double lastRobotPositionY = 0;
+    double lastRobotPositionR = 0;
 
     @Override
     public void initialize() {
@@ -26,6 +33,8 @@ public class Teleop extends FrogOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RobotHardware robot = RobotHardware.getInstance();
         robot.wobbleGoalArm.liftArmServo.setPosition(0.1);
+        robot.phone.activateVuf();
+        drive.setPoseEstimate(new Pose2d(10.5, -42.75));
     }
 
     @Override
@@ -108,9 +117,37 @@ public class Teleop extends FrogOpMode {
             while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
                 drive.turn(0 - robot.drive.getRawExternalHeading());
             }
+            sleep(200);
+            RobotPosition robotPos = robot.phone.getCurrentPosition();
+            if (robotPos != null) {
+                lastRobotPositionX = robotPos.x;
+                lastRobotPositionY = robotPos.y;
+                lastRobotPositionR = robotPos.rot;
+                drive.setPoseEstimate(new Pose2d(lastRobotPositionX, lastRobotPositionY));
+            }
         }
 
 
+        if(gamepad1.b){
+            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
+                drive.turn(0 - robot.drive.getRawExternalHeading());
+            }
+            sleep(200);
+            RobotPosition robotPos = robot.phone.getCurrentPosition();
+            if(robotPos != null){
+                lastRobotPositionX = robotPos.x;
+                lastRobotPositionY = robotPos.y;
+                lastRobotPositionR = robotPos.rot;
+                drive.setPoseEstimate(new Pose2d(lastRobotPositionX, lastRobotPositionY));
+                Trajectory powerShotMiddle = robot.drive.trajectoryBuilder(new Pose2d(robotPos.x, robotPos.y))
+                        .strafeTo(new Vector2d(10.5, -20))
+                        .build();
+                robot.drive.followTrajectory(powerShotMiddle);
+            }
+        }
+        telemetry.addData("robot position x", lastRobotPositionX);
+        telemetry.addData("robot position y", lastRobotPositionY);
+        telemetry.addData("robot position rot", lastRobotPositionR);
 
         // if stick up, raise arm
         if(gamepad2.left_stick_y < 0){

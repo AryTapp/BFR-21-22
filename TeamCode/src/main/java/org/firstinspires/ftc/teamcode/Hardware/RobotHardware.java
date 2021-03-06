@@ -27,12 +27,11 @@ public class RobotHardware {
 
     public Gyro gyro = null;
     public BFRMecanumDrive drive = null;
-    public BFRPhone bfrPhone = null;
+    public Phone phone = null;
     public Intake intake = null;
     public Basket basket = null;
     public Shooter shooter = null;
     public WobbleGoalArm wobbleGoalArm = null;
-    public Phone phone = null;
 
     public ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 
