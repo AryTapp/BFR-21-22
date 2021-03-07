@@ -21,6 +21,9 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
     ImageResult imageResult = null;
     static double shooterPower = 0.70;
+
+    double secondWobbleX = 10;
+    double secondWobbleY = -24;
     @Override
     public void initialize() {
         robot = RobotHardware.getInstance();
@@ -94,10 +97,25 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(1000);
 
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
+                .lineToLinearHeading(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
+                .build();
+        robot.drive.followTrajectory(trajectory4);
+
+        robot.wobbleGoalArm.lowerArm();
+        sleep(400);
+        robot.wobbleGoalArm.grab();
+        sleep(100);
+        robot.wobbleGoalArm.raiseArm();
+
+/*        Trajectory trajectory5 = robot.drive.trajectoryBuilder(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
+                .lineToLinearHeading(new Pose2d(xOffset, yOffset, 0))
+                .build();
+        robot.drive.followTrajectory(trajectory5);*/
+        /*Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
                 .strafeTo(new Vector2d(xParkOffset + xOffset, yOffset))
                 .build();
 
-        robot.drive.followTrajectory(trajectory4);
+        robot.drive.followTrajectory(trajectory4);*/
     }
 
     void shootThreeRings(){

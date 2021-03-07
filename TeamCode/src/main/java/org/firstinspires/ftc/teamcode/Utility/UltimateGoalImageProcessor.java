@@ -115,7 +115,7 @@ public class UltimateGoalImageProcessor {
             }
         }
 
-        if(topWhiteCount < 100 && bottomWhiteCount < 100) {
+        if(topWhiteCount < 500 && bottomWhiteCount < 500) {
             imageResult.numberOfRings = 0;
         }
         else if(topWhiteCount > bottomWhiteCount + 500) {
