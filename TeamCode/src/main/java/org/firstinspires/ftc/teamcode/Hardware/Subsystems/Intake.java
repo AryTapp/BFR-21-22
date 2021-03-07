@@ -12,7 +12,7 @@ public class Intake implements Subsystem {
     /**
      * Motors declaration
      */
-    private DcMotor intakeMotor;
+    public DcMotor intakeMotor;
 
     /**
      * Motor configuration names

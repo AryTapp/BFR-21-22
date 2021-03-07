@@ -22,8 +22,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     ImageResult imageResult = null;
     static double shooterPower = 0.70;
 
-    double secondWobbleX = 10;
-    double secondWobbleY = -24;
+    double secondWobbleX = 26;
+    double secondWobbleY = -13;
     @Override
     public void initialize() {
         robot = RobotHardware.getInstance();
@@ -46,27 +46,19 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         telemetry.update();
 
         Trajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
-                .strafeTo(new Vector2d(40, 16))
-                .build();
+                .splineToConstantHeading(new Vector2d(40, 16), Math.toRadians(0))
 
-        Trajectory trajectory2 = robot.drive.trajectoryBuilder(new Pose2d(40, 16))
-                .strafeTo(new Vector2d(63, -8))
-                .build();
+                .addDisplacementMarker(() -> {
+                    robot.basket.raiseBasket();
 
-        robot.drive.followTrajectory(trajectory);
+                    robot.shooter.shooterMotor.setPower(shooterPower);
+                })
 
-        robot.basket.raiseBasket();
-
-        robot.shooter.shooterMotor.setPower(shooterPower);
-
-        robot.drive.followTrajectory(trajectory2);
-/*
-        Trajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
-                .strafeTo(new Vector2d(62, -8))
+                .splineToConstantHeading(new Vector2d(63, -8), Math.toRadians(0))
                 .build();
 
         robot.drive.followTrajectory(trajectory);
-*/
+
 
         shootThreeRings();
 
@@ -96,6 +88,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
         sleep(1000);
 
+        robot.intake.intakeMotor.setPower(1);
+
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
                 .lineToLinearHeading(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
                 .build();
@@ -104,25 +98,38 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.wobbleGoalArm.lowerArm();
         sleep(400);
         robot.wobbleGoalArm.grab();
-        sleep(100);
+        sleep(500);
         robot.wobbleGoalArm.raiseArm();
-
-/*        Trajectory trajectory5 = robot.drive.trajectoryBuilder(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
-                .lineToLinearHeading(new Pose2d(xOffset, yOffset, 0))
+        sleep(200);
+        Trajectory trajectory5 = robot.drive.trajectoryBuilder(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
+                .lineToLinearHeading(new Pose2d(xOffset - 10, yOffset, 0))
                 .build();
-        robot.drive.followTrajectory(trajectory5);*/
-        /*Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
-                .strafeTo(new Vector2d(xParkOffset + xOffset, yOffset))
+        robot.drive.followTrajectory(trajectory5);
+
+        robot.wobbleGoalArm.lowerArm();
+        sleep(400);
+        robot.wobbleGoalArm.release();
+        sleep(500);
+
+        robot.intake.intakeMotor.setPower(0);
+
+        double parkOffsetX = 0;
+
+        if(imageResult.numberOfRings == 0){
+            parkOffsetX = -2;
+        }
+
+        Trajectory trajectory6 = robot.drive.trajectoryBuilder(new Pose2d(xOffset - 10 + parkOffsetX, yOffset))
+                .strafeTo(new Vector2d(63, -4))
                 .build();
 
-        robot.drive.followTrajectory(trajectory4);*/
+        robot.drive.followTrajectory(trajectory6);
+
+
+        sleep(10000);
     }
 
     void shootThreeRings(){
-/*        robot.shooter.shooterMotor.setPower(shooterPower);
-
-        sleep(3000);*/
-
         robot.basket.swipe();
 
         sleep(500);
