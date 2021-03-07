@@ -77,8 +77,8 @@ public class UltimateGoalImageProcessor {
         Mat cropOutput = new Mat();
         int widthLeft = (int) Math.round(input.width() * 0.36);
         int widthRight = (int) Math.round(input.width() * 0.77);
-        int heightDown = (int) Math.round(input.height() * 0.59);
-        int heightUp = (int) Math.round(input.height() * 0.78);
+        int heightDown = (int) Math.round(input.height() * 0.62);
+        int heightUp = (int) Math.round(input.height() * 0.75);
         cropOutput = cropInput.submat(heightDown,heightUp, widthLeft, widthRight);
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         filename = "Crop.jpg";
