@@ -22,8 +22,11 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     ImageResult imageResult = null;
     static double shooterPower = 0.70;
 
-    double secondWobbleX = 26;
+    double secondWobbleX = 24.5;
     double secondWobbleY = -13;
+
+    double shootPosX = 61;
+    double shootPosY = -9;
     @Override
     public void initialize() {
         robot = RobotHardware.getInstance();
@@ -54,7 +57,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
                     robot.shooter.shooterMotor.setPower(shooterPower);
                 })
 
-                .splineToConstantHeading(new Vector2d(63, -8), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(shootPosX, shootPosY), Math.toRadians(0))
                 .build();
 
         robot.drive.followTrajectory(trajectory);
@@ -62,8 +65,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
         shootThreeRings();
 
-        double xOffset = -1 + 62;
-        double yOffset = -24 - 8;
+        double xOffset = -1 + shootPosX;
+        double yOffset = -24 + shootPosY;
         double xParkOffset = 1;
 
         if(imageResult.numberOfRings == 1){

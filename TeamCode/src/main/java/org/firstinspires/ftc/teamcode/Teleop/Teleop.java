@@ -167,6 +167,8 @@ public class Teleop extends FrogOpMode {
         }
 
         if(gamepad1.b){
+            shooterStatus = true;
+            shooterPower = highGoalPower;
             while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
                 drive.turn(0 - robot.drive.getRawExternalHeading());
             }
