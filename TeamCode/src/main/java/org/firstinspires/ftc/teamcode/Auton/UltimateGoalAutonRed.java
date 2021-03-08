@@ -94,7 +94,11 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.intake.intakeMotor.setPower(1);
 
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(xOffset, yOffset))
-                .lineToLinearHeading(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
+                .splineToLinearHeading(new Pose2d(secondWobbleX + 24, secondWobbleY - 6, - Math.PI / 2), 0)
+                .addDisplacementMarker(() -> {
+                    sleep(1);
+                })
+                .splineToLinearHeading(new Pose2d(secondWobbleX, secondWobbleY, - Math.PI), - Math.PI / 2)
                 .build();
         robot.drive.followTrajectory(trajectory4);
 
@@ -104,10 +108,18 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(500);
         robot.wobbleGoalArm.raiseArm();
         sleep(200);
-        Trajectory trajectory5 = robot.drive.trajectoryBuilder(new Pose2d(secondWobbleX, secondWobbleY, Math.PI))
-                .lineToLinearHeading(new Pose2d(xOffset - 10, yOffset, 0))
+        Trajectory trajectory5 = robot.drive.trajectoryBuilder(new Pose2d(secondWobbleX, secondWobbleY, - Math.PI))
+                .splineToLinearHeading(new Pose2d(secondWobbleX + 24, secondWobbleY - 6, - Math.PI / 2), - Math.PI)
+                .addDisplacementMarker(() -> {
+                    sleep(1);
+                })
+                .splineToLinearHeading(new Pose2d(xOffset, yOffset, 0), - Math.PI/2)
                 .build();
         robot.drive.followTrajectory(trajectory5);
+
+        while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
+            robot.drive.turn(0 - robot.drive.getRawExternalHeading());
+        }
 
         robot.wobbleGoalArm.lowerArm();
         sleep(400);
@@ -119,7 +131,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         double parkOffsetX = 0;
 
         if(imageResult.numberOfRings == 0){
-            parkOffsetX = -2;
+            parkOffsetX = -4;
         }
 
         Trajectory trajectory6 = robot.drive.trajectoryBuilder(new Pose2d(xOffset - 10 + parkOffsetX, yOffset))
@@ -128,6 +140,9 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
         robot.drive.followTrajectory(trajectory6);
 
+        while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
+            robot.drive.turn(0 - robot.drive.getRawExternalHeading());
+        }
 
         sleep(10000);
     }
