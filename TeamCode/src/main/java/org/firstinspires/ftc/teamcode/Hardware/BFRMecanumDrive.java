@@ -136,6 +136,7 @@ public class BFRMecanumDrive extends MecanumDrive implements Subsystem {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        parameters.mode = BNO055IMU.SensorMode.IMU;
         imu.initialize(parameters);
 
         // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
