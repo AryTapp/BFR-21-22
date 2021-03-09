@@ -25,7 +25,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     // Key robot positions on the field
     Pose2d shootingPos = new Pose2d(61, -9);
     Pose2d wobbleTargetPos = new Pose2d(shootingPos.getX(), shootingPos.getY());
-    Pose2d secondWobblePos = new Pose2d(24.5, -13);
+    Pose2d secondWobblePos = new Pose2d(24, -13.5);
 
     boolean secondWobbleMission = true;
 
@@ -102,7 +102,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     {
         // Reverse intake in hope of removing rings along the way.
         robot.intake.intakeMotor.setPower(1);
-
+        robot.wobbleGoalArm.raiseArm();
         // Move back to get the second wobble goal
         Pose2d intermediateStop = new Pose2d(secondWobblePos.getX() + 20, secondWobblePos.getY() - 12, - Math.PI );
         Trajectory trajectory1 = robot.drive.trajectoryBuilder(wobbleTargetPos)
@@ -118,7 +118,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.drive.followTrajectory(trajectory2);
         telemetry.addData("Heading 2:", robot.drive.getRawExternalHeading());
 
-
+        robot.wobbleGoalArm.lowerArm();
+        sleep(500);
         robot.wobbleGoalArm.grab();
         sleep(500);
         robot.wobbleGoalArm.raiseArm();
