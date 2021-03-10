@@ -77,7 +77,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(500);
 
         // Do the second wobble mission if needed
-        if (secondWobbleMission)
+        if (secondWobbleMission && imageResult.numberOfRings == 0)
             secondWobbleMission();
 
         double parkOffsetX = 0;
