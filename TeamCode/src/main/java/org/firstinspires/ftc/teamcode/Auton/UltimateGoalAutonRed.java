@@ -166,9 +166,11 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         telemetry.addData("Heading 3: ", robot.drive.getRawExternalHeading());
 
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(intermediateStop)
-                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), -0.15))
+                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), -0.12))
                 .build();
         robot.drive.followTrajectory(trajectory4);
+        // Pretend that we are aligned.
+        robot.drive.setPoseEstimate(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), 0));
 
         robot.wobbleGoalArm.lowerArm();
         sleep(400);
