@@ -114,30 +114,29 @@ public class Teleop extends FrogOpMode {
 
 
         if(gamepad1.a) {
-            RobotPosition robotPos = robot.phone.getCurrentPosition();
+            Pose2d robotPos = robot.phone.getCurrentPosition();
             if (robotPos != null) {
-                lastRobotPositionX = robotPos.x;
-                lastRobotPositionY = robotPos.y;
-                lastRobotPositionR = robotPos.rot;
-                drive.setPoseEstimate(new Pose2d(lastRobotPositionX, lastRobotPositionY));
+                lastRobotPositionX = robotPos.getX();
+                lastRobotPositionY = robotPos.getY();
+                lastRobotPositionR = robotPos.getHeading();
+                drive.setPoseEstimate(robotPos);
             }
             drive.turn(0 - lastRobotPositionR);
         }
 
-
         if(gamepad1.x){
-            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
+            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.01) {
                 drive.turn(0 - robot.drive.getRawExternalHeading());
             }
             sleep(200);
-            RobotPosition robotPos = robot.phone.getCurrentPosition();
+            Pose2d robotPos = robot.phone.getCurrentPosition();
             if(robotPos != null){
-                lastRobotPositionX = robotPos.x;
-                lastRobotPositionY = robotPos.y;
-                lastRobotPositionR = robotPos.rot;
-                drive.setPoseEstimate(new Pose2d(lastRobotPositionX, lastRobotPositionY));
-                Trajectory powerShotRight = robot.drive.trajectoryBuilder(new Pose2d(robotPos.x, robotPos.y, robotPos.rot))
-                        .strafeTo(new Vector2d(10.5, -25))
+                lastRobotPositionX = robotPos.getX();
+                lastRobotPositionY = robotPos.getY();
+                lastRobotPositionR = robotPos.getHeading();
+                drive.setPoseEstimate(robotPos);
+                Trajectory powerShotRight = robot.drive.trajectoryBuilder(robotPos)
+                        .lineToLinearHeading(new Pose2d(10.5, -25, 0))
                         .build();
                 robot.drive.followTrajectory(powerShotRight);
             }
@@ -146,17 +145,17 @@ public class Teleop extends FrogOpMode {
         }
 
         if(gamepad1.y){
-            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.02) {
+            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.01) {
                 drive.turn(0 - robot.drive.getRawExternalHeading());
             }
             sleep(200);
-            RobotPosition robotPos = robot.phone.getCurrentPosition();
+            Pose2d robotPos = robot.phone.getCurrentPosition();
             if(robotPos != null){
-                lastRobotPositionX = robotPos.x;
-                lastRobotPositionY = robotPos.y;
-                lastRobotPositionR = robotPos.rot;
-                drive.setPoseEstimate(new Pose2d(lastRobotPositionX, lastRobotPositionY));
-                Trajectory strafeLeft = robot.drive.trajectoryBuilder(new Pose2d(robotPos.x, robotPos.y))
+                lastRobotPositionX = robotPos.getX();
+                lastRobotPositionY = robotPos.getY();
+                lastRobotPositionR = robotPos.getHeading();
+                drive.setPoseEstimate(robotPos);
+                Trajectory strafeLeft = robot.drive.trajectoryBuilder(robotPos)
                         .strafeLeft(7.5)
                         .build();
                 robot.drive.followTrajectory(strafeLeft);
@@ -170,14 +169,14 @@ public class Teleop extends FrogOpMode {
                 drive.turn(0 - robot.drive.getRawExternalHeading());
             }
             sleep(200);
-            RobotPosition robotPos = robot.phone.getCurrentPosition();
+            Pose2d robotPos = robot.phone.getCurrentPosition();
             if(robotPos != null){
-                lastRobotPositionX = robotPos.x;
-                lastRobotPositionY = robotPos.y;
-                lastRobotPositionR = robotPos.rot;
-                drive.setPoseEstimate(new Pose2d(lastRobotPositionX, lastRobotPositionY));
-                Trajectory highGoal = robot.drive.trajectoryBuilder(new Pose2d(robotPos.x, robotPos.y,  robotPos.rot))
-                        .strafeTo(new Vector2d(10.5, -41))
+                lastRobotPositionX = robotPos.getX();
+                lastRobotPositionY = robotPos.getY();
+                lastRobotPositionR = robotPos.getHeading();
+                drive.setPoseEstimate(robotPos);
+                Trajectory highGoal = robot.drive.trajectoryBuilder(robotPos)
+                        .lineToLinearHeading(new Pose2d(10.5, -41, 0))
                         .build();
                 robot.drive.followTrajectory(highGoal);
             }

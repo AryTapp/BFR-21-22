@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.Hardware.Subsystems;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -327,8 +328,8 @@ public class Phone implements Subsystem {
         // Disable Tracking when we are done;
         targetsUltimateGoal.deactivate();
     }
-    public RobotPosition getCurrentPosition(){
-        RobotPosition robotPosition = null;
+    public Pose2d getCurrentPosition(){
+        Pose2d robotPosition = null;
 /*        timer.reset();
 
         while (timer.time() <= 5) {*/
@@ -351,15 +352,17 @@ public class Phone implements Subsystem {
 
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
-                robotPosition = new RobotPosition();
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
-                robotPosition.x = translation.get(0) / mmPerInch;
-                robotPosition.y = translation.get(1) / mmPerInch;
+                double robotPositionX = translation.get(0) / mmPerInch;
+                double robotPositionY = translation.get(1) / mmPerInch;
 
                 // express the rotation of the robot in degrees.
                 Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, RADIANS);
-                robotPosition.rot = rotation.firstAngle;
+                double robotPositionR = rotation.firstAngle;
+
+                robotPosition = new Pose2d(robotPositionX, robotPositionY, robotPositionR);
+
             }
         //}
 

@@ -402,4 +402,8 @@ public class BFRMecanumDrive extends MecanumDrive implements Subsystem {
     public double getRawExternalHeading() {
         return imu.getAngularOrientation().firstAngle;
     }
+
+    public double getBatteryVoltage() {
+        return batteryVoltageSensor.getVoltage();
+    }
 }
