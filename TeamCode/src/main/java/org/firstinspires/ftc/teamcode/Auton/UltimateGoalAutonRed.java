@@ -31,7 +31,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     // Key robot positions on the field
     Pose2d shootingPos = new Pose2d(61, -9);
     Pose2d wobbleTargetPos = new Pose2d(shootingPos.getX(), shootingPos.getY());
-    Pose2d secondWobblePos = new Pose2d(25, -13.5);
+    Pose2d secondWobblePos = new Pose2d(25.25, -13.75);
 
     boolean secondWobbleMission = true;
 
@@ -42,7 +42,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.basket.lowerBasket();
 
         if (robot.drive.getBatteryVoltage() > 12.0)
-            shooterPower = 0.70 * 14.0 / robot.drive.getBatteryVoltage();
+            shooterPower = shooterPower * 14.0 / robot.drive.getBatteryVoltage();
     }
 
     @Override
@@ -91,12 +91,12 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
         double parkOffsetX = 0;
         if(imageResult.numberOfRings == 0){
-            parkOffsetX = -6;
+            parkOffsetX = -8;
         }
 
         Trajectory trajectory6 = robot.drive.trajectoryBuilder(
                 new Pose2d(wobbleTargetPos.getX() - 10 + parkOffsetX, wobbleTargetPos.getY()))
-                .strafeTo(new Vector2d(63, -4))
+                .strafeTo(new Vector2d(63, 0))
                 .build();
         robot.drive.followTrajectory(trajectory6);
 
@@ -166,7 +166,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         telemetry.addData("Heading 3: ", robot.drive.getRawExternalHeading());
 
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(intermediateStop)
-                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), -0.12))
+                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), -0.09))
                 .build();
         robot.drive.followTrajectory(trajectory4);
         // Pretend that we are aligned.
