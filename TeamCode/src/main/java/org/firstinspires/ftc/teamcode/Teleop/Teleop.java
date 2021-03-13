@@ -36,9 +36,9 @@ public class Teleop extends FrogOpMode {
         robot.phone.activateVuf();
         drive.setPoseEstimate(new Pose2d(10.5, -42.75));
         if (robot.drive.getBatteryVoltage() > 12.0)
-            shooterPower = 0.70 * 14.0 / robot.drive.getBatteryVoltage();
-        highGoalPower = highGoalPower * 14.0 / robot.drive.getBatteryVoltage();
-        powerShotPower = powerShotPower * 14.0 / robot.drive.getBatteryVoltage();
+            shooterPower = 0.70 * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
+        highGoalPower = highGoalPower * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
+        powerShotPower = powerShotPower * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
     }
 
     @Override
@@ -138,8 +138,9 @@ public class Teleop extends FrogOpMode {
                 lastRobotPositionX = robotPos.getX();
                 lastRobotPositionY = robotPos.getY();
                 lastRobotPositionR = robotPos.getHeading();
-                drive.setPoseEstimate(robotPos);
-                Trajectory powerShotRight = robot.drive.trajectoryBuilder(robotPos)
+                Pose2d newPos = new Pose2d(robotPos.getX(), robotPos.getY(), 0);
+                drive.setPoseEstimate(newPos);
+                Trajectory powerShotRight = robot.drive.trajectoryBuilder(newPos)
                         .lineToLinearHeading(new Pose2d(10.5, -25, 0))
                         .build();
                 robot.drive.followTrajectory(powerShotRight);
@@ -158,8 +159,9 @@ public class Teleop extends FrogOpMode {
                 lastRobotPositionX = robotPos.getX();
                 lastRobotPositionY = robotPos.getY();
                 lastRobotPositionR = robotPos.getHeading();
-                drive.setPoseEstimate(robotPos);
-                Trajectory strafeLeft = robot.drive.trajectoryBuilder(robotPos)
+                Pose2d newPos = new Pose2d(robotPos.getX(), robotPos.getY(), 0);
+                drive.setPoseEstimate(newPos);
+                Trajectory strafeLeft = robot.drive.trajectoryBuilder(newPos)
                         .strafeLeft(7.5)
                         .build();
                 robot.drive.followTrajectory(strafeLeft);

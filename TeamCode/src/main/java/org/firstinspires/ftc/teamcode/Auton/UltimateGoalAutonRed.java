@@ -29,9 +29,9 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     static double shooterPower = 0.70;
 
     // Key robot positions on the field
-    Pose2d shootingPos = new Pose2d(61, -9);
+    Pose2d shootingPos = new Pose2d(61, -12);
     Pose2d wobbleTargetPos = new Pose2d(shootingPos.getX(), shootingPos.getY());
-    Pose2d secondWobblePos = new Pose2d(25.25, -13.75);
+    Pose2d secondWobblePos = new Pose2d(23, -13.75);
 
     boolean secondWobbleMission = true;
 
@@ -42,7 +42,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.basket.lowerBasket();
 
         if (robot.drive.getBatteryVoltage() > 12.0)
-            shooterPower = shooterPower * 14.0 / robot.drive.getBatteryVoltage();
+            shooterPower = shooterPower * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
     }
 
     @Override
@@ -86,12 +86,12 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(500);
 
         // Do the second wobble mission if needed
-        if (secondWobbleMission && imageResult.numberOfRings == 0)
+        if (secondWobbleMission && imageResult.numberOfRings != 4)
             secondWobbleMission();
 
         double parkOffsetX = 0;
         if(imageResult.numberOfRings == 0){
-            parkOffsetX = -8;
+            parkOffsetX = -10;
         }
 
         Trajectory trajectory6 = robot.drive.trajectoryBuilder(
@@ -141,8 +141,14 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         writeLog(logWriter, message);
         telemetry.addData("Heading 1: ", robot.drive.getRawExternalHeading());
 
+        double wobbleOffsetY = 0;
+        double wobbleOffsetX = 0;
+        if(imageResult.numberOfRings == 1){
+            wobbleOffsetY = 3;
+            wobbleOffsetX = 2;
+        }
         Trajectory trajectory2 = robot.drive.trajectoryBuilder(intermediateStop)
-                .lineTo(new Vector2d(secondWobblePos.getX(), secondWobblePos.getY()))
+                .lineTo(new Vector2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY))
                 .build();
         robot.drive.followTrajectory(trajectory2);
 
@@ -157,7 +163,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         telemetry.addData("Heading 2: ", robot.drive.getRawExternalHeading());
 
         // Drive to the target zone to drop the second wobble goal
-        Trajectory trajectory3 = robot.drive.trajectoryBuilder(new Pose2d(secondWobblePos.getX(), secondWobblePos.getY(), - Math.PI))
+        Trajectory trajectory3 = robot.drive.trajectoryBuilder(new Pose2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY, - Math.PI))
                 .lineTo(new Vector2d(intermediateStop.getX(), intermediateStop.getY()))
                 .build();
         robot.drive.followTrajectory(trajectory3);
@@ -194,7 +200,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
     void setWobbleTargetPosition()
     {
         // case 0:
-        wobbleTargetPos = wobbleTargetPos.plus(new Pose2d(-1, -24));
+        wobbleTargetPos = wobbleTargetPos.plus(new Pose2d(1, -24));
 
         switch (imageResult.numberOfRings) {
             case 1:
