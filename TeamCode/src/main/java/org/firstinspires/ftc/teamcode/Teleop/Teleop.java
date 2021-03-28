@@ -22,7 +22,7 @@ public class Teleop extends FrogOpMode {
     private double highGoalPower = .70;
     private double powerShotPower = .67;
     private double shooterPower = highGoalPower;
-    private boolean shooterStatus = false;
+    private boolean shooterStatus = true;
     double lastRobotPositionX = 0;
     double lastRobotPositionY = 0;
     double lastRobotPositionR = 0;
@@ -208,6 +208,35 @@ public class Teleop extends FrogOpMode {
         }
         if(gamepad2.b){
             robot.wobbleGoalArm.grab();
+        }
+        if(gamepad2.a){
+            shooterPower = highGoalPower;
+
+            robot.basket.raiseBasket();
+
+            sleep(500);
+
+            robot.basket.swipe();
+
+            sleep(500);
+
+            robot.basket.resetSwiper();
+
+            sleep(1000);
+
+            robot.basket.swipe();
+
+            sleep(500);
+
+            robot.basket.resetSwiper();
+
+            sleep(1000);
+
+            robot.basket.swipe();
+
+            sleep(500);
+
+            robot.basket.resetSwiper();
         }
 
         //because we have multiple lines of telemetry i'll just put this down here :)
