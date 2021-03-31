@@ -26,7 +26,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
 
     ImageResult imageResult = null;
-    static double shooterPower = 0.65;
+    static double shooterPower = 0.70;
 
     // Key robot positions on the field
     Pose2d shootingPos = new Pose2d(59, -12);

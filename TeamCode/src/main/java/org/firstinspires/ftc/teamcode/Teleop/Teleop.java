@@ -19,8 +19,8 @@ public class Teleop extends FrogOpMode {
 
     private double intakePower = 1;
     private boolean intakeOn = false;
-    private double highGoalPower = .65;
-    private double powerShotPower = .60;
+    private double highGoalPower = .67;
+    private double powerShotPower = .64;
     private double shooterPower = highGoalPower;
     private boolean shooterStatus = false;
     double lastRobotPositionX = 0;
@@ -35,8 +35,6 @@ public class Teleop extends FrogOpMode {
         robot.wobbleGoalArm.liftArmServo.setPosition(0.1);
         robot.phone.activateVuf();
         drive.setPoseEstimate(new Pose2d(10.5, -42.75));
-        if (robot.drive.getBatteryVoltage() > 12.0)
-            shooterPower = 0.70 * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
         highGoalPower = highGoalPower * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
         powerShotPower = powerShotPower * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
     }
