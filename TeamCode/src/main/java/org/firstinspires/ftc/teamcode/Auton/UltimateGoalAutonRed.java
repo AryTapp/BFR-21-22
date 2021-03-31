@@ -26,12 +26,12 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
 
     ImageResult imageResult = null;
-    static double shooterPower = 0.70;
+    static double shooterPower = 0.65;
 
     // Key robot positions on the field
-    Pose2d shootingPos = new Pose2d(61, -12);
+    Pose2d shootingPos = new Pose2d(59, -12);
     Pose2d wobbleTargetPos = new Pose2d(shootingPos.getX(), shootingPos.getY());
-    Pose2d secondWobblePos = new Pose2d(23, -13.75);
+    Pose2d secondWobblePos = new Pose2d(22.75, -14.5);
 
     boolean secondWobbleMission = true;
 
@@ -61,12 +61,14 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         // Grab the wobble goal and reset the swiper before driving
         robot.wobbleGoalArm.grab();
         robot.basket.resetSwiper();
+        robot.basket.raiseBasket();
 
         // Drive to the shooting position on a spline path while raising the basket and turn on shooting motor
         Trajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
                 .splineToConstantHeading(new Vector2d(40, 12), Math.toRadians(0))
                 .addDisplacementMarker(() -> {
                     robot.basket.raiseBasket();
+                    sleep(300);
                     robot.shooter.shooterMotor.setPower(shooterPower);
                 })
                 .splineToConstantHeading(new Vector2d(shootingPos.getX(), shootingPos.getY()), Math.toRadians(0))

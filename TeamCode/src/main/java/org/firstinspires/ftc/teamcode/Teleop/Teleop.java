@@ -19,10 +19,10 @@ public class Teleop extends FrogOpMode {
 
     private double intakePower = 1;
     private boolean intakeOn = false;
-    private double highGoalPower = .70;
-    private double powerShotPower = .67;
+    private double highGoalPower = .65;
+    private double powerShotPower = .60;
     private double shooterPower = highGoalPower;
-    private boolean shooterStatus = true;
+    private boolean shooterStatus = false;
     double lastRobotPositionX = 0;
     double lastRobotPositionY = 0;
     double lastRobotPositionR = 0;
@@ -87,7 +87,7 @@ public class Teleop extends FrogOpMode {
             robot.basket.swipe();
         }
 
-        if(gamepad2.left_bumper){
+        if(gamepad1.right_trigger > 0){
             if(shooterStatus){
                 shooterStatus = false;
             }
