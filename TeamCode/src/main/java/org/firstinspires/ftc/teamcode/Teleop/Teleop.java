@@ -19,8 +19,8 @@ public class Teleop extends FrogOpMode {
 
     private double intakePower = 1;
     private boolean intakeOn = false;
-    private double highGoalPower = .67;
-    private double powerShotPower = .64;
+    private double highGoalPower = .65;
+    private double powerShotPower = .59;
     private double shooterPower = highGoalPower;
     private boolean shooterStatus = false;
     double lastRobotPositionX = 0;
@@ -139,7 +139,7 @@ public class Teleop extends FrogOpMode {
                 Pose2d newPos = new Pose2d(robotPos.getX(), robotPos.getY(), 0);
                 drive.setPoseEstimate(newPos);
                 Trajectory powerShotRight = robot.drive.trajectoryBuilder(newPos)
-                        .lineToLinearHeading(new Pose2d(10.5, -25, 0))
+                        .lineToLinearHeading(new Pose2d(9.5, -32, 0))
                         .build();
                 robot.drive.followTrajectory(powerShotRight);
             }
@@ -163,6 +163,25 @@ public class Teleop extends FrogOpMode {
                         .strafeLeft(7.5)
                         .build();
                 robot.drive.followTrajectory(strafeLeft);
+            }
+        }
+
+        if(gamepad1.a){
+            while (Math.abs(robot.drive.getRawExternalHeading()) > 0.01) {
+                drive.turn(0 - robot.drive.getRawExternalHeading());
+            }
+            sleep(200);
+            Pose2d robotPos = robot.phone.getCurrentPosition();
+            if(robotPos != null){
+                lastRobotPositionX = robotPos.getX();
+                lastRobotPositionY = robotPos.getY();
+                lastRobotPositionR = robotPos.getHeading();
+                Pose2d newPos = new Pose2d(robotPos.getX(), robotPos.getY(), 0);
+                drive.setPoseEstimate(newPos);
+                Trajectory strafeRight = robot.drive.trajectoryBuilder(newPos)
+                        .strafeRight(7.5)
+                        .build();
+                robot.drive.followTrajectory(strafeRight);
             }
         }
 
