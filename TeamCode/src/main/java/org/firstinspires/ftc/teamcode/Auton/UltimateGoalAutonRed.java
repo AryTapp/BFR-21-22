@@ -98,7 +98,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
         Trajectory trajectory6 = robot.drive.trajectoryBuilder(
                 new Pose2d(wobbleTargetPos.getX() - 10 + parkOffsetX, wobbleTargetPos.getY()))
-                .strafeTo(new Vector2d(63, 0))
+                .strafeTo(new Vector2d(65, 0))
                 .build();
         robot.drive.followTrajectory(trajectory6);
 
@@ -131,10 +131,12 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         }
 
         // Reverse intake in hope of removing rings along the way.
-        robot.intake.intakeMotor.setPower(1);
         robot.wobbleGoalArm.raiseArm();
         // Move back to get the second wobble goal
         Pose2d intermediateStop = new Pose2d(secondWobblePos.getX() + 20, secondWobblePos.getY() - 12, - Math.PI );
+        if(imageResult.numberOfRings == 1){
+            intermediateStop = new Pose2d(secondWobblePos.getX() + 10, secondWobblePos.getY() - 12, -Math.PI);
+        }
         Trajectory trajectory1 = robot.drive.trajectoryBuilder(wobbleTargetPos)
                 .lineToLinearHeading(intermediateStop)
                 .build();
@@ -146,8 +148,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         double wobbleOffsetY = 0;
         double wobbleOffsetX = 0;
         if(imageResult.numberOfRings == 1){
-            wobbleOffsetY = 5;
-            wobbleOffsetX = 0.5;
+            wobbleOffsetY = 4;
+            wobbleOffsetX = 0;
         }
         Trajectory trajectory2 = robot.drive.trajectoryBuilder(intermediateStop)
                 .lineTo(new Vector2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY))
@@ -173,8 +175,12 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         writeLog(logWriter, message);
         telemetry.addData("Heading 3: ", robot.drive.getRawExternalHeading());
 
+        double angleCompensation = -0.09;
+        if(imageResult.numberOfRings == 1){
+            angleCompensation = -0.115;
+        }
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(intermediateStop)
-                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), -0.09))
+                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), angleCompensation))
                 .build();
         robot.drive.followTrajectory(trajectory4);
         // Pretend that we are aligned.
@@ -187,8 +193,6 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         message = "Heading 4: " + robot.drive.getRawExternalHeading();
         writeLog(logWriter, message);
         telemetry.addData("Heading 4: ", robot.drive.getRawExternalHeading());
-
-        robot.intake.intakeMotor.setPower(0);
 
         try {
             logWriter.close();
