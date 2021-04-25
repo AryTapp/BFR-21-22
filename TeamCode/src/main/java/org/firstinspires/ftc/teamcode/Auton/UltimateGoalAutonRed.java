@@ -61,7 +61,6 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         // Grab the wobble goal and reset the swiper before driving
         robot.wobbleGoalArm.grab();
         robot.basket.resetSwiper();
-        robot.basket.raiseBasket();
 
         // Drive to the shooting positon on a spline path while raising the basket and turn on shooting motor
         Trajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
@@ -75,7 +74,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
                 .build();
         robot.drive.followTrajectory(trajectory);
         // Shoot the rings.
-        shootThreeRings();
+        robot.shootThreeRings();
 
         // Drive to target zone and drop the wobble goal
         Trajectory trajectory3 = robot.drive.trajectoryBuilder(new Pose2d(63, -8))
@@ -218,29 +217,6 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         }
     }
 
-    void shootThreeRings(){
-        robot.basket.swipe();
 
-        sleep(500);
-
-        robot.basket.resetSwiper();
-
-        sleep(1000);
-
-        robot.basket.swipe();
-
-        sleep(500);
-
-        robot.basket.resetSwiper();
-
-        sleep(1000);
-
-        robot.basket.swipe();
-
-        sleep(500);
-
-        robot.basket.resetSwiper();
-        robot.shooter.shooterMotor.setPower(0);
-    }
 
 }

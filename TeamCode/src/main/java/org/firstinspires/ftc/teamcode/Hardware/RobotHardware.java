@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.WobbleGoalArm;
 
 import java.util.ArrayList;
 
+import static android.os.SystemClock.sleep;
 
 
 public class RobotHardware {
@@ -22,6 +23,8 @@ public class RobotHardware {
         return instance;
     }
 
+    static long shootingHoldTime = 300;
+    static long resetTime = 600;
 
     public Gyro gyro = null;
     public BFRMecanumDrive drive = null;
@@ -64,8 +67,31 @@ public class RobotHardware {
         }
 
     }
+    public void shootThreeRings(){
+        basket.swipe();
 
+        sleep(shootingHoldTime);
 
+        basket.resetSwiper();
+
+        sleep(resetTime);
+
+        basket.swipe();
+
+        sleep(shootingHoldTime);
+
+        basket.resetSwiper();
+
+        sleep(resetTime);
+
+        basket.swipe();
+
+        sleep(shootingHoldTime);
+
+        basket.resetSwiper();
+        basket.lowerBasket();
+        shooter.shooterMotor.setPower(0);
+    }
 
     public void sendTelemetry(Telemetry telemetry){
         for(Subsystem subsystem: subsystems){

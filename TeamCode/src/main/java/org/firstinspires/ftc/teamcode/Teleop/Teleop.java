@@ -234,32 +234,7 @@ public class Teleop extends FrogOpMode {
         }
         if(gamepad2.a){
             shooterPower = highGoalPower;
-
-            robot.basket.raiseBasket();
-
-            sleep(500);
-
-            robot.basket.swipe();
-
-            sleep(500);
-
-            robot.basket.resetSwiper();
-
-            sleep(1000);
-
-            robot.basket.swipe();
-
-            sleep(500);
-
-            robot.basket.resetSwiper();
-
-            sleep(1000);
-
-            robot.basket.swipe();
-
-            sleep(500);
-
-            robot.basket.resetSwiper();
+            robot.shootThreeRings();
         }
 
         //because we have multiple lines of telemetry i'll just put this down here :)
