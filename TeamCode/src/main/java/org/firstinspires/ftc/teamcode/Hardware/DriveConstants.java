@@ -70,7 +70,7 @@ public class DriveConstants {
     //vel used to be 30
 
     public static DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-            40.0, 30.0, 0.0,
+            45.0, 30.0, 0.0,
             Math.toRadians(180.0), Math.toRadians(180.0), 0.0
     );
 

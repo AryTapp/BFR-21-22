@@ -26,10 +26,10 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
 
 
     ImageResult imageResult = null;
-    static double shooterPower = 0.65;
+    static double shooterPower = 0;
 
     // Key robot positions on the field
-    Pose2d shootingPos = new Pose2d(59, -20);
+    Pose2d shootingPos = new Pose2d(58, -20);
     Pose2d wobbleTargetPos = new Pose2d(59, -12);
     Pose2d secondWobblePos = new Pose2d(22.75, -15.5);
 
@@ -42,7 +42,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.basket.lowerBasket();
 
         if (robot.drive.getBatteryVoltage() > 12.0)
-            shooterPower = shooterPower * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
+            shooterPower = robot.shooter.highGoalPowerConstant * Math.sqrt(robot.shooter.shooterConstant / robot.drive.getBatteryVoltage());
     }
 
     @Override
@@ -75,6 +75,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot.drive.followTrajectory(trajectory);
         // Shoot the rings.
         robot.shootThreeRings();
+        robot.intake.intakeMotor.setPower(.5);
 
         // Drive to target zone and drop the wobble goal
         Trajectory trajectory3 = robot.drive.trajectoryBuilder(shootingPos)
@@ -85,6 +86,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(500);
         robot.wobbleGoalArm.release();
         sleep(500);
+        robot.intake.intakeMotor.setPower(0);
 
         // Do the second wobble mission if needed
         //if (secondWobbleMission && imageResult.numberOfRings != 4)
@@ -152,7 +154,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         }
         else if(imageResult.numberOfRings == 4){
             wobbleOffsetY = 2;
-            wobbleOffsetX = -1;
+            wobbleOffsetX = -2;
         }
         Trajectory trajectory2 = robot.drive.trajectoryBuilder(intermediateStop)
                 .lineTo(new Vector2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY))
@@ -178,7 +180,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         writeLog(logWriter, message);
         telemetry.addData("Heading 3: ", robot.drive.getRawExternalHeading());
 
-        double angleCompensation = -0.09;
+        double angleCompensation = -0.05;
         if(imageResult.numberOfRings == 1){
             angleCompensation = -0.115;
         }

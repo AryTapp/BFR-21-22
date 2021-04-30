@@ -21,8 +21,6 @@ public class Teleop extends FrogOpMode {
     private boolean intakeOn = false;
     private double highGoalPower = 0;
     private double powerShotPower = 0;
-    private double highGoalPowerConstant = .65;
-    private double powerShotPowerConstant = .59;
     private double shooterPower = highGoalPower;
     private boolean shooterStatus = false;
     double lastRobotPositionX = 0;
@@ -37,8 +35,8 @@ public class Teleop extends FrogOpMode {
         robot.wobbleGoalArm.liftArmServo.setPosition(0.1);
         robot.phone.activateVuf();
         drive.setPoseEstimate(new Pose2d(10.5, -42.75));
-        highGoalPower = highGoalPowerConstant * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
-        powerShotPower = powerShotPowerConstant * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
+        highGoalPower = robot.shooter.highGoalPowerConstant * Math.sqrt(robot.shooter.shooterConstant / robot.drive.getBatteryVoltage());
+        powerShotPower = highGoalPower - 0.06;
         shooterPower = highGoalPower;
     }
 
@@ -49,8 +47,8 @@ public class Teleop extends FrogOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Intake intake = robot.intake;
 
-        highGoalPower = highGoalPowerConstant * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
-        powerShotPower = powerShotPowerConstant * robot.shooter.shooterConstant / robot.drive.getBatteryVoltage();
+        highGoalPower = robot.shooter.highGoalPowerConstant * Math.sqrt(robot.shooter.shooterConstant / robot.drive.getBatteryVoltage());
+        powerShotPower = highGoalPower - 0.06;
 
         // Create a vector from the gamepad x/y inputs
         // Then, rotate that vector by the inverse of that heading
