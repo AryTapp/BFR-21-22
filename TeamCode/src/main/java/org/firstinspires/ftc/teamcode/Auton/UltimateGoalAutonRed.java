@@ -40,6 +40,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         robot = RobotHardware.getInstance();
         robot.wobbleGoalArm.initWobble();
         robot.basket.lowerBasket();
+        robot.ringBlockers.raiseBlockers();
 
         if (robot.drive.getBatteryVoltage() > 12.0)
             shooterPower = robot.shooter.highGoalPowerConstant * Math.sqrt(robot.shooter.shooterConstant / robot.drive.getBatteryVoltage());

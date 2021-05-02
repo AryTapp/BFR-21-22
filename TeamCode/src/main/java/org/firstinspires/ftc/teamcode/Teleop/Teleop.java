@@ -143,7 +143,7 @@ public class Teleop extends FrogOpMode {
                 Pose2d newPos = new Pose2d(robotPos.getX(), robotPos.getY(), 0);
                 drive.setPoseEstimate(newPos);
                 Trajectory powerShotRight = robot.drive.trajectoryBuilder(newPos)
-                        .lineToLinearHeading(new Pose2d(9.5, -32, 0))
+                        .lineToLinearHeading(new Pose2d(9.5, -23, 0))
                         .build();
                 robot.drive.followTrajectory(powerShotRight);
             }
@@ -221,7 +221,7 @@ public class Teleop extends FrogOpMode {
             robot.wobbleGoalArm.lowerArm();
         }
         if(gamepad2.y){
-            robot.wobbleGoalArm.initArm();
+            robot.ringBlockers.leftBlockServo.setPosition(.1);
         }
 
         if(gamepad2.x){
@@ -232,8 +232,38 @@ public class Teleop extends FrogOpMode {
         }
         if(gamepad2.a){
             shooterPower = highGoalPower;
-            robot.shootThreeRings();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    RobotHardware robot = RobotHardware.getInstance();
+                    robot.shootThreeRings();
+                }
+            }
+            ).start();
         }
+
+        //ring blocker code
+        if(gamepad2.right_stick_y < 0) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    RobotHardware robot = RobotHardware.getInstance();
+                    robot.ringBlockers.raiseBlockers();
+                }
+            }
+            ).start();
+        }
+        else if(gamepad2.right_stick_y > 0){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    RobotHardware robot = RobotHardware.getInstance();
+                    robot.ringBlockers.lowerBlockers();
+                }
+            }
+            ).start();
+        }
+
 
         //because we have multiple lines of telemetry i'll just put this down here :)
         telemetry.update();

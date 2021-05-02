@@ -9,7 +9,7 @@ public class Shooter implements Subsystem{
     public DcMotor shooterMotor;
     public String shooterName = "shooterMotor";
     public static double shooterConstant = 13.75;
-    public static double highGoalPowerConstant = .685;
+    public static double highGoalPowerConstant = .68;
     private double directionSign = 1;
     @Override
 

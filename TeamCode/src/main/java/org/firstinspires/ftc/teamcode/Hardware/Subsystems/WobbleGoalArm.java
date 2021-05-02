@@ -4,6 +4,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
+
+import static android.os.SystemClock.sleep;
 
 public class WobbleGoalArm implements Subsystem {
 
@@ -21,16 +24,23 @@ public class WobbleGoalArm implements Subsystem {
     public Servo gripperServo;
     private String gripperName = "gripperServo";
 
+    RobotHardware robot;
+
     @Override
     public void initialize(HardwareMap map, Telemetry telemetry) {
         liftArmServo = map.servo.get(liftArmName);
         gripperServo = map.servo.get(gripperName);
+        robot = RobotHardware.getInstance();
     }
 
     public void lowerArm(){
+        robot.ringBlockers.leftBlockServo.setPosition(.15);
+        sleep(100);
         liftArmServo.setPosition(lowerArmPos);
     }
     public void raiseArm(){
+        robot.ringBlockers.leftBlockServo.setPosition(.15);
+        sleep(100);
         liftArmServo.setPosition(raiseArmPos);
     }
     public void initArm(){
