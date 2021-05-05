@@ -196,17 +196,7 @@ public class Teleop extends FrogOpMode {
                 drive.turn(0 - robot.drive.getRawExternalHeading());
             }
             sleep(200);
-            Pose2d robotPos = robot.phone.getCurrentPosition();
-            if(robotPos != null){
-                lastRobotPositionX = robotPos.getX();
-                lastRobotPositionY = robotPos.getY();
-                lastRobotPositionR = robotPos.getHeading();
-                drive.setPoseEstimate(robotPos);
-                Trajectory highGoal = robot.drive.trajectoryBuilder(robotPos)
-                        .lineToLinearHeading(new Pose2d(10.5, -41, 0))
-                        .build();
-                robot.drive.followTrajectory(highGoal);
-            }
+            drive.turn(Math.PI * -0.11);
         }
 
         telemetry.addData("robot position x", lastRobotPositionX);
