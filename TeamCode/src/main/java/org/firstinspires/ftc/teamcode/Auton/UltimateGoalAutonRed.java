@@ -154,7 +154,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
             wobbleOffsetX = 0;
         }
         else if(imageResult.numberOfRings == 4){
-            wobbleOffsetY = 2;
+            wobbleOffsetY = 3;
             wobbleOffsetX = -2;
         }
         Trajectory trajectory2 = robot.drive.trajectoryBuilder(intermediateStop)
