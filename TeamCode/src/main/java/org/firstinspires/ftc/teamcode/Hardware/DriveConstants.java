@@ -67,10 +67,10 @@ public class DriveConstants {
      * forces acceleration-limited profiling). All distance units are inches.
      */
 
-    //vel used to be 30
+    //vel used to be 30. Adjust this to make the robot go faster! And if any of you new black frogs see this, good luck with your season! - Katherine
 
     public static DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-            45.0, 30.0, 0.0,
+            50.0, 30.0, 0.0,
             Math.toRadians(180.0), Math.toRadians(180.0), 0.0
     );
 

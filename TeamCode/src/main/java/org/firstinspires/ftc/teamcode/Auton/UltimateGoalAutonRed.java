@@ -77,6 +77,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         // Shoot the rings.
         robot.shootThreeRings();
         robot.intake.intakeMotor.setPower(.5);
+        robot.shooter.shooterMotor.setPower(0);
 
         // Drive to target zone and drop the wobble goal
         Trajectory trajectory3 = robot.drive.trajectoryBuilder(shootingPos)
@@ -89,64 +90,43 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(500);
         robot.intake.intakeMotor.setPower(0);
 
-        // Do the second wobble mission if needed
-        //if (secondWobbleMission && imageResult.numberOfRings != 4)
         secondWobbleMission();
+
+        if(imageResult.numberOfRings != 0){
+            Trajectory trajectory7 = robot.drive.trajectoryBuilder(
+                    new Pose2d(wobbleTargetPos.getX() - 10, wobbleTargetPos.getY()))
+                    .strafeTo(new Vector2d(shootingPos.getX(), shootingPos.getY()))
+                    .build();
+            robot.drive.followTrajectory(trajectory7);
+            robot.shootTwoRings();
+        }
+
+
 
         double parkOffsetX = 0;
         if(imageResult.numberOfRings == 0){
             parkOffsetX = -10;
         }
 
-        Trajectory trajectory6 = robot.drive.trajectoryBuilder(
-                new Pose2d(wobbleTargetPos.getX() - 10 + parkOffsetX, wobbleTargetPos.getY()))
-                .strafeTo(new Vector2d(68, 0))
-                .build();
-        robot.drive.followTrajectory(trajectory6);
-
+        if(imageResult.numberOfRings == 0) {
+            Trajectory trajectory6 = robot.drive.trajectoryBuilder(
+                    new Pose2d(wobbleTargetPos.getX() - 10 + parkOffsetX, wobbleTargetPos.getY()))
+                    .strafeTo(new Vector2d(68, 0))
+                    .build();
+            robot.drive.followTrajectory(trajectory6);
+        }
+        else {
+            Trajectory trajectory6 = robot.drive.trajectoryBuilder(shootingPos)
+                    .strafeTo(new Vector2d(68, 0))
+                    .build();
+            robot.drive.followTrajectory(trajectory6);
+        }
         sleep(10000);
     }
 
-    void writeLog(FileWriter fileWriter, String message)
-    {
-        message += "\n";
-        try {
-            fileWriter.write(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-            telemetry.addData("message write failed\n", 0);
-        }
-    }
-
-    void secondWobbleMission()
-    {
-        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String filename = "log.txt";
-        File file = new File(path, filename);
-
-        FileWriter logWriter = null;
-        try {
-            logWriter = new FileWriter(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-            telemetry.addData("File creation failed\n", 0);
-        }
-
-        // Reverse intake in hope of removing rings along the way.
+    void secondWobbleMission() {
         robot.wobbleGoalArm.raiseArm();
         // Move back to get the second wobble goal
-        Pose2d intermediateStop = new Pose2d(secondWobblePos.getX() + 20, secondWobblePos.getY() - 12, - Math.PI );
-        if(imageResult.numberOfRings == 1){
-            intermediateStop = new Pose2d(secondWobblePos.getX() + 10, secondWobblePos.getY() - 12, -Math.PI);
-        }
-        Trajectory trajectory1 = robot.drive.trajectoryBuilder(wobbleTargetPos)
-                .lineToLinearHeading(intermediateStop)
-                .build();
-        robot.drive.followTrajectory(trajectory1);
-        String message = "Heading 1: " + robot.drive.getRawExternalHeading();
-        writeLog(logWriter, message);
-        telemetry.addData("Heading 1: ", robot.drive.getRawExternalHeading());
-
         double wobbleOffsetY = 0;
         double wobbleOffsetX = 0;
         if(imageResult.numberOfRings == 1){
@@ -157,8 +137,8 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
             wobbleOffsetY = 3;
             wobbleOffsetX = -2;
         }
-        Trajectory trajectory2 = robot.drive.trajectoryBuilder(intermediateStop)
-                .lineTo(new Vector2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY))
+        Trajectory trajectory2 = robot.drive.trajectoryBuilder(wobbleTargetPos)
+                .lineToLinearHeading(new Pose2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY, Math.PI))
                 .build();
         robot.drive.followTrajectory(trajectory2);
 
@@ -168,45 +148,28 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         sleep(500);
         robot.wobbleGoalArm.raiseArm();
         sleep(200);
-        message = "Heading 2: " + robot.drive.getRawExternalHeading();
-        writeLog(logWriter, message);
-        telemetry.addData("Heading 2: ", robot.drive.getRawExternalHeading());
 
         // Drive to the target zone to drop the second wobble goal
-        Trajectory trajectory3 = robot.drive.trajectoryBuilder(new Pose2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY, - Math.PI))
-                .lineTo(new Vector2d(intermediateStop.getX(), intermediateStop.getY()))
-                .build();
-        robot.drive.followTrajectory(trajectory3);
-        message = "Heading 3: " + robot.drive.getRawExternalHeading();
-        writeLog(logWriter, message);
-        telemetry.addData("Heading 3: ", robot.drive.getRawExternalHeading());
 
-        double angleCompensation = -0.05;
+        double angleCompensation = 0.05;
         if(imageResult.numberOfRings == 1){
-            angleCompensation = -0.115;
+            angleCompensation = 0.115;
         }
-        Trajectory trajectory4 = robot.drive.trajectoryBuilder(intermediateStop)
+        Trajectory trajectory4 = robot.drive.trajectoryBuilder(new Pose2d(secondWobblePos.getX() + wobbleOffsetX, secondWobblePos.getY() + wobbleOffsetY))
                 .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), angleCompensation))
                 .build();
         robot.drive.followTrajectory(trajectory4);
         // Pretend that we are aligned.
         robot.drive.setPoseEstimate(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), 0));
 
+        robot.shooter.shooterMotor.setPower(shooterPower);
         robot.wobbleGoalArm.lowerArm();
         sleep(400);
         robot.wobbleGoalArm.release();
-        sleep(500);
-        message = "Heading 4: " + robot.drive.getRawExternalHeading();
-        writeLog(logWriter, message);
-        telemetry.addData("Heading 4: ", robot.drive.getRawExternalHeading());
+        sleep(400);
+        robot.wobbleGoalArm.raiseArm();
 
-        try {
-            logWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            telemetry.addData("File close failed\n", 0);
-        }
-        telemetry.update();
+        robot.basket.raiseBasket();
     }
 
     void setWobbleTargetPosition()

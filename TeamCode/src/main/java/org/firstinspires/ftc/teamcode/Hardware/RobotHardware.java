@@ -95,7 +95,24 @@ public class RobotHardware {
 
         basket.resetSwiper();
         basket.lowerBasket();
-        shooter.shooterMotor.setPower(0);
+    }
+
+    public void shootTwoRings(){
+        basket.swipe();
+
+        sleep(shootingHoldTime);
+
+        basket.resetSwiper();
+
+        sleep(resetTime);
+
+        basket.swipe();
+
+        sleep(shootingHoldTime);
+
+        basket.resetSwiper();
+
+        basket.lowerBasket();
     }
 
     public void sendTelemetry(Telemetry telemetry){
