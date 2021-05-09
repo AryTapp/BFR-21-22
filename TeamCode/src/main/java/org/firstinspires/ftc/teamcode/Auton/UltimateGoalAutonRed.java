@@ -135,7 +135,7 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
             wobbleOffsetX = 0;
         }
         else if(imageResult.numberOfRings == 4){
-            wobbleOffsetY = 3;
+            wobbleOffsetY = 3.5;
             wobbleOffsetX = -2;
         }
         secondWobblePos = secondWobblePos.plus(new Pose2d(wobbleOffsetX, wobbleOffsetY));
