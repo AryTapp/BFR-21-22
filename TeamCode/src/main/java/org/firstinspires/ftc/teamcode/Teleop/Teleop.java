@@ -38,6 +38,7 @@ public class Teleop extends FrogOpMode {
         highGoalPower = (robot.shooter.highGoalPowerConstant) * Math.sqrt(robot.shooter.shooterConstant / robot.drive.getBatteryVoltage());
         powerShotPower = highGoalPower - 0.06;
         shooterPower = highGoalPower;
+        shooterStatus = true;
     }
 
     @Override
