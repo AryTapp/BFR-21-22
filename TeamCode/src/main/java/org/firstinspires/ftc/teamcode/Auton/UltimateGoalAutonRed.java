@@ -106,10 +106,14 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         if(imageResult.numberOfRings == 0){
             parkOffsetX = -10;
         }
+        double wobbleGoalDropOffset = -10;
+        if(imageResult.numberOfRings == 0){
+            wobbleGoalDropOffset = -12;
+        }
 
         if(imageResult.numberOfRings == 0) {
             Trajectory trajectory6 = robot.drive.trajectoryBuilder(
-                    new Pose2d(wobbleTargetPos.getX() - 10 + parkOffsetX, wobbleTargetPos.getY()))
+                    new Pose2d(wobbleTargetPos.getX() + wobbleGoalDropOffset + parkOffsetX, wobbleTargetPos.getY()))
                     .strafeTo(new Vector2d(68, 0))
                     .build();
             robot.drive.followTrajectory(trajectory6);
@@ -165,13 +169,16 @@ public class UltimateGoalAutonRed extends FrogLinearOpMode {
         else if (imageResult.numberOfRings == 4) {
             angleCompensation = -0.125;
         }
-
+        double wobbleGoalDropOffset = -10;
+        if(imageResult.numberOfRings == 0){
+            wobbleGoalDropOffset = -12;
+        }
         Trajectory trajectory4 = robot.drive.trajectoryBuilder(intermediateStop)
-                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), angleCompensation))
+                .lineToLinearHeading(new Pose2d(wobbleTargetPos.getX() + wobbleGoalDropOffset, wobbleTargetPos.getY(), angleCompensation))
                 .build();
         robot.drive.followTrajectory(trajectory4);
         // Pretend that we are aligned.
-        robot.drive.setPoseEstimate(new Pose2d(wobbleTargetPos.getX()-10, wobbleTargetPos.getY(), 0));
+        robot.drive.setPoseEstimate(new Pose2d(wobbleTargetPos.getX() + wobbleGoalDropOffset, wobbleTargetPos.getY(), 0));
 
         // Start the shooting motor
         if(imageResult.numberOfRings != 0)
