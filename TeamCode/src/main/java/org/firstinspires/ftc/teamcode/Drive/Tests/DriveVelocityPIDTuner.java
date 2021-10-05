@@ -18,6 +18,8 @@ import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
 
 import java.util.List;
 
+import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.MAX_VEL;
 import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.MOTOR_VELO_PID;
 import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.RUN_USING_ENCODER;
 import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.kV;
@@ -42,40 +44,24 @@ import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.kV;
  * 2. Add kI (or adjust kF) until the steady state/constant velocity plateaus are reached.
  * 3. Back off kP and kD a little until the response is less oscillatory (but without lag).
  *
- * Pressing X (on the Xbox and Logitech F310 gamepads, square on the PS4 Dualshock gamepad) will
- * pause the tuning process and enter driver override, allowing the user to reset the position of
- * the bot in the event that it drifts off the path.
- * Pressing A (on the Xbox and Logitech F310 gamepads, X on the PS4 Dualshock gamepad) will cede
- * control back to the tuning process.
+ * Pressing Y/Δ (Xbox/PS4) will pause the tuning process and enter driver override, allowing the
+ * user to reset the position of the bot in the event that it drifts off the path.
+ * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
 @Config
 @Autonomous(group = "drive")
 public class DriveVelocityPIDTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
 
-    private FtcDashboard dashboard = FtcDashboard.getInstance();
-
-    private BFRMecanumDrive drive;
-
     enum Mode {
         DRIVER_MODE,
         TUNING_MODE
     }
 
-    private Mode mode;
-
-    private double lastKp = MOTOR_VELO_PID.p;
-    private double lastKi = MOTOR_VELO_PID.i;
-    private double lastKd = MOTOR_VELO_PID.d;
-    private double lastKf = MOTOR_VELO_PID.f;
-
     private static MotionProfile generateProfile(boolean movingForward) {
         MotionState start = new MotionState(movingForward ? 0 : DISTANCE, 0, 0, 0);
         MotionState goal = new MotionState(movingForward ? DISTANCE : 0, 0, 0, 0);
-        return MotionProfileGenerator.generateSimpleMotionProfile(start, goal,
-                DriveConstants.BASE_CONSTRAINTS.maxVel,
-                DriveConstants.BASE_CONSTRAINTS.maxAccel,
-                DriveConstants.BASE_CONSTRAINTS.maxJerk);
+        return MotionProfileGenerator.generateSimpleMotionProfile(start, goal, MAX_VEL, MAX_ACCEL);
     }
 
     @Override
@@ -85,11 +71,16 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                     "PID is not in use", getClass().getSimpleName());
         }
 
-        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        drive = new BFRMecanumDrive(hardwareMap);
+        BFRMecanumDrive drive = new BFRMecanumDrive(hardwareMap);
 
-        mode = Mode.TUNING_MODE;
+        Mode mode = Mode.TUNING_MODE;
+
+        double lastKp = MOTOR_VELO_PID.p;
+        double lastKi = MOTOR_VELO_PID.i;
+        double lastKd = MOTOR_VELO_PID.d;
+        double lastKf = MOTOR_VELO_PID.f;
 
         drive.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
 
@@ -113,7 +104,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
 
             switch (mode) {
                 case TUNING_MODE:
-                    if (gamepad1.x) {
+                    if (gamepad1.y) {
                         mode = Mode.DRIVER_MODE;
                         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                     }
@@ -137,7 +128,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                     // update telemetry
                     telemetry.addData("targetVelocity", motionState.getV());
                     for (int i = 0; i < velocities.size(); i++) {
-                        telemetry.addData("velocity" + i, velocities.get(i));
+                        telemetry.addData("measuredVelocity" + i, velocities.get(i));
                         telemetry.addData(
                                 "error" + i,
                                 motionState.getV() - velocities.get(i)
@@ -145,7 +136,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                     }
                     break;
                 case DRIVER_MODE:
-                    if (gamepad1.a) {
+                    if (gamepad1.b) {
                         drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                         mode = Mode.TUNING_MODE;

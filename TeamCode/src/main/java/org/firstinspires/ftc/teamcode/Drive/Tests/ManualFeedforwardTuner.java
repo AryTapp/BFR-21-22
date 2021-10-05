@@ -13,11 +13,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.Hardware.DriveConstants;
 import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
 
 import java.util.Objects;
 
+import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.MAX_VEL;
 import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.RUN_USING_ENCODER;
 import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.kStatic;
@@ -34,11 +35,9 @@ import static org.firstinspires.ftc.teamcode.Hardware.DriveConstants.kV;
  * the velocity errors over time and adjust the feedforward coefficients. Once you've found a
  * satisfactory set of gains, add them to the appropriate fields in the DriveConstants.java file.
  *
- * Pressing X (on the Xbox and Logitech F310 gamepads, square on the PS4 Dualshock gamepad) will
- * pause the tuning process and enter driver override, allowing the user to reset the position of
- * the bot in the event that it drifts off the path.
- * Pressing A (on the Xbox and Logitech F310 gamepads, X on the PS4 Dualshock gamepad) will cede
- * control back to the tuning process.
+ * Pressing Y/Δ (Xbox/PS4) will pause the tuning process and enter driver override, allowing the
+ * user to reset the position of the bot in the event that it drifts off the path.
+ * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
 @Config
 @Autonomous(group = "drive")
@@ -47,7 +46,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    private BFRMecanumDrive drive;
+    private SampleMecanumDrive drive;
 
     enum Mode {
         DRIVER_MODE,
@@ -59,10 +58,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
     private static MotionProfile generateProfile(boolean movingForward) {
         MotionState start = new MotionState(movingForward ? 0 : DISTANCE, 0, 0, 0);
         MotionState goal = new MotionState(movingForward ? DISTANCE : 0, 0, 0, 0);
-        return MotionProfileGenerator.generateSimpleMotionProfile(start, goal,
-                DriveConstants.BASE_CONSTRAINTS.maxVel,
-                DriveConstants.BASE_CONSTRAINTS.maxAccel,
-                DriveConstants.BASE_CONSTRAINTS.maxJerk);
+        return MotionProfileGenerator.generateSimpleMotionProfile(start, goal, MAX_VEL, MAX_ACCEL);
     }
 
     @Override
@@ -74,7 +70,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        drive = new BFRMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
 
         mode = Mode.TUNING_MODE;
 
@@ -98,7 +94,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
             switch (mode) {
                 case TUNING_MODE:
-                    if (gamepad1.x) {
+                    if (gamepad1.y) {
                         mode = Mode.DRIVER_MODE;
                     }
 
@@ -123,11 +119,11 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
                     // update telemetry
                     telemetry.addData("targetVelocity", motionState.getV());
-                    telemetry.addData("poseVelocity", currentVelo);
-                    telemetry.addData("error", currentVelo - motionState.getV());
+                    telemetry.addData("measuredVelocity", currentVelo);
+                    telemetry.addData("error", motionState.getV() - currentVelo);
                     break;
                 case DRIVER_MODE:
-                    if (gamepad1.a) {
+                    if (gamepad1.b) {
                         mode = Mode.TUNING_MODE;
                         movingForwards = true;
                         activeProfile = generateProfile(movingForwards);
