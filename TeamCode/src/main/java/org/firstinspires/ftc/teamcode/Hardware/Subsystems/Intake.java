@@ -10,18 +10,18 @@ public class Intake implements Subsystem {
 
 
     /**
-     * Motors declaration
-     */
+//      Motors declaration
+//     */
     public DcMotor intakeMotor;
 
     /**
      * Motor configuration names
-     */
+     * /     */
     private String intake = "intake";
 
-    /**
-     * Motor variables
-     */
+
+   //   Motor variables
+
     private int directionSign = -1;
 
 
@@ -48,7 +48,7 @@ public class Intake implements Subsystem {
 
     @Override
     public void sendTelemetry(Telemetry telemetry) {
-
-
     }
+
 }
+

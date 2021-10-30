@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Shooter implements Subsystem{
+/*public class Shooter implements Subsystem{
     public DcMotor shooterMotor;
     public String shooterName = "shooterMotor";
     public static double shooterConstant = 13.75;
@@ -35,3 +35,5 @@ public class Shooter implements Subsystem{
 
     }
 }
+
+ */

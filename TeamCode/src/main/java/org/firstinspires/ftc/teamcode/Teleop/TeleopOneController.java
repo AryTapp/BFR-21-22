@@ -8,15 +8,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.FourBar;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 
 @TeleOp
 public class TeleopOneController extends FrogOpMode {
-    //private double intakePower = 90;
-    //private boolean intakeOn = false;
+    private double intakePower = 90;
+    private boolean intakeOn = false;
     //private double shooterPower = 60;
+    private double fourBarPower = 90;
     @Override
-    public void initialize() {
+   public void initialize() {
         BFRMecanumDrive drive = RobotHardware.getInstance().drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RobotHardware robot = RobotHardware.getInstance();
@@ -28,8 +30,7 @@ public class TeleopOneController extends FrogOpMode {
         RobotHardware robot = RobotHardware.getInstance();
         BFRMecanumDrive drive = robot.drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Intake intake = robot.intake;
-
+        // Intake intake = robot.;
         // Create a vector from the gamepad x/y inputs
         // Then, rotate that vector by the inverse of that heading
         Vector2d input = new Vector2d(
@@ -46,15 +47,20 @@ public class TeleopOneController extends FrogOpMode {
                         -gamepad1.right_stick_y
                 )
         );
-        /*
+        if (gamepad1.dpad_up) {
+            robot.fourBar.fourBar(fourBarPower);
+        }
+        if (gamepad1.dpad_down) {
+            robot.fourBar.fourBar(- fourBarPower);
+        }
         if(gamepad1.right_bumper){
-             robot.intake.intake(10, -intakePower);
+             robot.intake.intake(10, intakePower);
         }
         if(gamepad1.left_bumper){
-            robot.intake.intake(10, intakePower);
+            robot.intake.intake(10, -intakePower);
         }
 
-        if(gamepad1.dpad_up){
+      /*  if(gamepad1.dpad_up){
             robot.basket.raiseBasket();
         }
 
@@ -73,7 +79,8 @@ public class TeleopOneController extends FrogOpMode {
         if(gamepad1.left_trigger > 0.05){
             robot.shooter.shoot(10, shooterPower);
         }
-        */
+
+       */
     }
 }
 

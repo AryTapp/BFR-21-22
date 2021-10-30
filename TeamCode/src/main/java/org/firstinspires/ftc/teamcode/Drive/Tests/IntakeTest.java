@@ -19,7 +19,7 @@ public class IntakeTest extends FrogLinearOpMode {
     @Override
     public void run() {
         RobotHardware robot = RobotHardware.getInstance();
-        robot.intake.intake(10000, 50);
+       // robot.intake.intake(10000, 50);
 
     }
 }
