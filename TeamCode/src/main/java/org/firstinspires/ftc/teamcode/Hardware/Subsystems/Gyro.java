@@ -70,7 +70,9 @@ public class Gyro implements Subsystem {
 
     public double getAngle(){
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        //hubs mounted vertically vertical axis = x
+        //if horizontal change XYZ to ZYX
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         return angles.firstAngle;
 
     }
