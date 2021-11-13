@@ -5,7 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 //import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Basket;
-import org.firstinspires.ftc.teamcode.Hardware.Subsystems.FourBar;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Carousel;
+import org.firstinspires.ftc.teamcode.Hardware.Subsystems.xRail;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Gyro;
 //import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
@@ -33,7 +34,8 @@ public class RobotHardware {
     public BFRMecanumDrive drive = null;
     public Phone phone = null;
     public Intake intake = null;
-    public FourBar fourBar = null;
+    public  xRail Xrail = null;
+    public Carousel carousel = null;
     //  public Basket basket = null;
     //public Shooter shooter = null;
    // public WobbleGoalArm wobbleGoalArm = null;
@@ -58,8 +60,12 @@ public class RobotHardware {
         intake = new Intake();
        subsystems.add(intake);
 
-       fourBar = new FourBar();
-       subsystems.add(fourBar);
+       Xrail = new xRail();
+       subsystems.add(Xrail);
+
+       carousel = new Carousel();
+       subsystems.add(carousel);
+
 
         //shooter = new Shooter();
 //        subsystems.add(shooter);

@@ -2,33 +2,32 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Hardware.Subsystems.xRail;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 
-@TeleOp
-public class TeleopOneController extends FrogOpMode {
+public class TeleopFreightFrenzy extends FrogOpMode {
+
     private double intakePower = 1;
     private boolean intakeOn = false;
     //private double shooterPower = 60;
     private double x = 90;
     private double carouselPower = 0.2;
     private double xRailPower = 0.9;
+
     @Override
-   public void initialize() {
+    public void initialize() {
         BFRMecanumDrive drive = RobotHardware.getInstance().drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RobotHardware robot = RobotHardware.getInstance();
         //robot.basket.lowerBasket();
         //robot.basket.resetSwiper();
     }
+
     @Override
-    public void repeat()  {
+    public void repeat() {
         RobotHardware robot = RobotHardware.getInstance();
         BFRMecanumDrive drive = robot.drive;
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -50,21 +49,27 @@ public class TeleopOneController extends FrogOpMode {
                 )
         );
         if (gamepad1.dpad_up) {
-            robot.Xrail.moveRail(xRailPower,5);
+            robot.Xrail.moveRail(xRailPower, 5);
         }
         if (gamepad1.dpad_down) {
-            robot.Xrail.moveRail(-xRailPower*0.5,5);
+            robot.Xrail.moveRail(-xRailPower * 0.5, 5);
         }
         telemetry.addData("xrail Counts", robot.Xrail.xRailMotor.getCurrentPosition());
         telemetry.update();
-        if(gamepad1.left_bumper){
-             robot.intake.intake(10, intakePower);
+        if (gamepad1.left_bumper) {
+            robot.intake.intake(10, intakePower);
         }
-        if(gamepad1.right_bumper){
+        if (gamepad1.right_bumper) {
             robot.intake.intake(10, -intakePower);
         }
-        if (gamepad1.a){
+        if (gamepad1.a) {
             robot.carousel.rotateCarousalTeleOp(carouselPower);
+        }
+        if (gamepad1.dpad_left){
+            robot.Xrail.dropFreightLeft();
+        }
+        if (gamepad1.dpad_right){
+            robot.Xrail.dropFreightRight();
         }
 
       /*  if(gamepad1.dpad_up){
@@ -88,6 +93,7 @@ public class TeleopOneController extends FrogOpMode {
         }
 
        */
+
+
     }
 }
-
