@@ -2,37 +2,28 @@ package org.firstinspires.ftc.teamcode.Auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.Utility.FrogLinearOpMode;
-import org.firstinspires.ftc.teamcode.Utility.UltimateGoalImageProcessor;
 import org.opencv.core.Mat;
 
+@Autonomous(name = "redCarouselAuto")
 
-//Image Inputs:
+public class RedCarouselAuto extends CarouselAuto{
 
-
-@Autonomous(name = "pictureAuton")
-public class pictureAuton extends FrogLinearOpMode {
     @Override
-    public void initialize() {
+    public void initialize(){
+        super.initialize();
 
     }
 
     @Override
-    public void run() {
-        RobotHardware robot = RobotHardware.getInstance();
-        telemetry.addData("Hardware:", "initialized");
-        telemetry.update();
+    public void run(){
         Mat picture = robot.phone.getMat();
-        telemetry.addData("Photo:","taken");
-        telemetry.update();
         int pos = getPosition(picture);
-        telemetry.addData("Position: " , pos);
-        telemetry.update();
-        while(opModeIsActive()){
+        setSide(pos);
+        telemetry.addData("Position ",pos);
+        super.run();
 
-        }
-
+    }
+    public RedCarouselAuto () {
     }
 
     public int getPosition(Mat img){
@@ -70,13 +61,14 @@ public class pictureAuton extends FrogLinearOpMode {
         telemetry.addData("Width: ", width);
         telemetry.addData("Height: ", height);
 
-        if(pixelCount < 200){
-            return 1;
+        if(pixelCount < 50){
+            return 3; //Right
         } else if(rightCount > leftCount){
-            return 2;
+            return 1; //Left
         } else {
-            return 3;
+            return 2; //Middle
         }
     }
+
 
 }

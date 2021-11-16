@@ -2,36 +2,14 @@ package org.firstinspires.ftc.teamcode.Auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.Utility.FrogLinearOpMode;
-import org.firstinspires.ftc.teamcode.Utility.UltimateGoalImageProcessor;
 import org.opencv.core.Mat;
 
+@Autonomous(name = "blueCarouselAuto")
+// Same thing as RedCarousel but just multiply output by -1
+public class BlueCarouselAuto extends CarouselAuto{
 
-//Image Inputs:
-
-
-@Autonomous(name = "pictureAuton")
-public class pictureAuton extends FrogLinearOpMode {
-    @Override
-    public void initialize() {
-
-    }
-
-    @Override
-    public void run() {
-        RobotHardware robot = RobotHardware.getInstance();
-        telemetry.addData("Hardware:", "initialized");
-        telemetry.update();
-        Mat picture = robot.phone.getMat();
-        telemetry.addData("Photo:","taken");
-        telemetry.update();
-        int pos = getPosition(picture);
-        telemetry.addData("Position: " , pos);
-        telemetry.update();
-        while(opModeIsActive()){
-
-        }
+    public BlueCarouselAuto() {
+        setSide(-1);
 
     }
 
@@ -70,13 +48,12 @@ public class pictureAuton extends FrogLinearOpMode {
         telemetry.addData("Width: ", width);
         telemetry.addData("Height: ", height);
 
-        if(pixelCount < 200){
-            return 1;
-        } else if(rightCount > leftCount){
-            return 2;
-        } else {
+        if(pixelCount < 50){
             return 3;
+        } else if(rightCount > leftCount){
+            return 1;
+        } else {
+            return 2;
         }
     }
-
 }

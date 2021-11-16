@@ -49,10 +49,10 @@ public class TeleopOneController extends FrogOpMode {
                         -gamepad1.right_stick_y
                 )
         );
-        if (gamepad1.dpad_up) {
+        if (gamepad2.dpad_up) {
             robot.Xrail.moveRail(xRailPower,5);
         }
-        if (gamepad1.dpad_down) {
+        if (gamepad2.dpad_down) {
             robot.Xrail.moveRail(-xRailPower*0.5,5);
         }
         telemetry.addData("xrail Counts", robot.Xrail.xRailMotor.getCurrentPosition());
@@ -60,11 +60,15 @@ public class TeleopOneController extends FrogOpMode {
         if(gamepad1.left_bumper){
              robot.intake.intake(10, intakePower);
         }
+        //outake
         if(gamepad1.right_bumper){
             robot.intake.intake(10, -intakePower);
         }
-        if (gamepad1.a){
+        if (gamepad2.right_bumper){
             robot.carousel.rotateCarousalTeleOp(carouselPower);
+        }
+        if (gamepad2.left_bumper){
+            robot.carousel.rotateCarousalTeleOp(-carouselPower);
         }
 
       /*  if(gamepad1.dpad_up){

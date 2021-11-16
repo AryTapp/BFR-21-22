@@ -42,6 +42,9 @@ public class Carousel implements Subsystem{
     public void rotateCarousalTeleOp(double power){
         carousalMotorLeft.setPower(power);
         carousalMotorRight.setPower(power);
+
+        carousalMotorLeft.setPower(0);
+        carousalMotorRight.setPower(0);
     }
     @Override
     public void sendTelemetry(Telemetry telemetry) {

@@ -16,6 +16,7 @@ public class xRail implements Subsystem{
     public String xRailName = "xRailMotor";
     public Servo xRailServo;
     public String xRailServoName = "xRailServo";
+    public double xRailPower = 1.0;
 //    //Servo
     //private static double dropBasketLeftPos = 0.60;
     //private static double dropBasketRightPos = 0.22;
@@ -26,9 +27,8 @@ public class xRail implements Subsystem{
 
     public void initialize(HardwareMap map, Telemetry telemetry) {
         xRailMotor = map.dcMotor.get(xRailName);
-        xRailMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //xRailMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //xRailMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        xRailMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        xRailMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         xRailMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         xRailServo = map.servo.get(xRailServoName);
 //        telemetry.addData("Motor Counts", xRailMotor.getCurrentPosition());
@@ -38,7 +38,6 @@ public class xRail implements Subsystem{
 
     @Override
     public void sendTelemetry(Telemetry telemetry) {
-
 
 
     }
@@ -57,9 +56,9 @@ public class xRail implements Subsystem{
         xRailMotor.setPower(0);
     }
     public void dropFreightLeft(){
-        xRailServo.setPosition(0);
+        xRailServo.setPosition(0.07);
         try {
-            Thread.sleep(300);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -67,13 +66,16 @@ public class xRail implements Subsystem{
     }
 
     public void dropFreightRight(){
-        xRailServo.setPosition(1);
+        xRailServo.setPosition(0.93);
         try {
-            Thread.sleep(300);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         xRailServo.setPosition(0.5);
+    }
+
+    private void sleep(int i) {
     }
 
     public void resetxRailMotor(){
@@ -82,23 +84,30 @@ public class xRail implements Subsystem{
 //        telemetry.addData("Motor Counts", xRailMotor.getCurrentPosition());
 //        telemetry.update();
     }
-    public void liftxRail(double power, String floorString) {
+    public void liftxRail(String floorString) {
         if (floorString.toLowerCase() == "top") {
-            xRailMotor.setTargetPosition(5000);
+            xRailMotor.setTargetPosition(500);
             xRailMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+            xRailMotor.setPower(xRailPower);
         } else if (floorString.toLowerCase() == "middle") {
             xRailMotor.setTargetPosition(1000);
             xRailMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            xRailMotor.setPower(xRailPower);
 
         } else if (floorString.toLowerCase() == "cap") {
-            xRailMotor.setTargetPosition(5000);
+            xRailMotor.setTargetPosition(2000);
             xRailMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            xRailMotor.setPower(xRailPower);
+
         } else {
             //lower floor by default
             xRailMotor.setTargetPosition(500);
             xRailMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            xRailMotor.setPower(xRailPower);
         }
+        sleep(100);
+        xRailMotor.setPower(0);
+
     }
 //    public void lowerxRail(double power) {
 //        fourBarMotor.setPower(power);
