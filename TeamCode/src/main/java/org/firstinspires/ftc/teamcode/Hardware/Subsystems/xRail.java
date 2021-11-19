@@ -17,6 +17,9 @@ public class xRail implements Subsystem{
     public Servo xRailServo;
     public String xRailServoName = "xRailServo";
     public double xRailPower = 1.0;
+    Runnable goRight;
+    Runnable goLeft;
+
 //    //Servo
     //private static double dropBasketLeftPos = 0.60;
     //private static double dropBasketRightPos = 0.22;
@@ -33,6 +36,9 @@ public class xRail implements Subsystem{
         xRailServo = map.servo.get(xRailServoName);
 //        telemetry.addData("Motor Counts", xRailMotor.getCurrentPosition());
 //        telemetry.update();
+        goRight = new goRight(xRailServo);
+        goLeft = new goLeft(xRailServo);
+
 
     }
 
@@ -56,23 +62,11 @@ public class xRail implements Subsystem{
         xRailMotor.setPower(0);
     }
     public void dropFreightLeft(){
-        xRailServo.setPosition(0.07);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        xRailServo.setPosition(0.5);
+        goLeft.run();
     }
 
     public void dropFreightRight(){
-        xRailServo.setPosition(0.93);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        xRailServo.setPosition(0.5);
+        goRight.run();
     }
 
     private void sleep(int i) {
@@ -123,4 +117,47 @@ public class xRail implements Subsystem{
 //    public void initBasket(){
 //        basketServo.setPosition(basketInitPos);
 //    }
+}
+
+class goRight implements Runnable{
+    Servo xRailServo;
+    public goRight(Servo x){
+        xRailServo = x;
+    }
+    public void run() {
+        xRailServo.setPosition(0.93);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        xRailServo.setPosition(0.5);
+    }
+}
+class goLeft implements Runnable{
+    Servo xRailServo;
+    public goLeft(Servo x){
+        xRailServo = x;
+    }
+    public void run() {
+        xRailServo.setPosition(0.07);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        xRailServo.setPosition(0.5);
+    }
+
+
+}
+
+class servoTimer extends Thread{
+    public void run(){
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e){
+
+        }
+    }
 }

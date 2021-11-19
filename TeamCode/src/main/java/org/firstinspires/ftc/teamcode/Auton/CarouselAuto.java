@@ -22,7 +22,7 @@ public class CarouselAuto extends FrogLinearOpMode {
     Pose2d startingPos2 = new Pose2d(8.5,-56.5* side,Math.PI/2* side);
     Pose2d startingPos = (side ==1) ? startingPos1 : startingPos2;
 
-    Pose2d carousalPos = new Pose2d(-57, -56.5* side, Math.PI/2* side);
+    Pose2d carousalPos = new Pose2d(-57, -56.75* side, Math.PI/2* side);
     Pose2d sharedDepoPos1 = new Pose2d(-29.5, -25.5* side, Math.PI/2* side);
     Pose2d sharedDepoPos2 = new Pose2d(8.5, -25.5* side, Math.PI/2* side);
     Pose2d homeCarousel = new Pose2d(-58.5, -34.75* side, Math.PI/2.0* side);

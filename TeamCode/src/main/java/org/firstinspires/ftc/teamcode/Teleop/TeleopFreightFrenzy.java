@@ -18,6 +18,8 @@ public class TeleopFreightFrenzy extends FrogOpMode {
     private double x = 90;
     private double carouselPower = 0.5;
     private double xRailPower = 1.0;
+    servoRightTimer rightThread;
+    servoLeftTimer leftThread;
 
 
     @Override
@@ -28,6 +30,8 @@ public class TeleopFreightFrenzy extends FrogOpMode {
 
         RobotHardware robot = RobotHardware.getInstance();
         robot.Xrail.xRailMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightThread = new servoRightTimer();
+        leftThread = new servoLeftTimer();
         //robot.basket.lowerBasket();
         //robot.basket.resetSwiper();
     }
@@ -56,6 +60,21 @@ public class TeleopFreightFrenzy extends FrogOpMode {
                         -gamepad1.right_stick_y
                 )
         );
+
+        if(rightThread.isAlive()){
+            robot.Xrail.xRailServo.setPosition(0.93);
+        } else {
+            robot.Xrail.xRailServo.setPosition(0.5);
+
+        }
+
+        if(leftThread.isAlive()){
+            robot.Xrail.xRailServo.setPosition(0.07);
+        } else {
+            robot.Xrail.xRailServo.setPosition(0.5);
+
+        }
+
         if (gamepad2.dpad_up) {
             robot.Xrail.moveRail(xRailPower, 5);
         }
@@ -78,10 +97,18 @@ public class TeleopFreightFrenzy extends FrogOpMode {
         }
 
         if (gamepad2.dpad_left){
-            robot.Xrail.dropFreightRight();
+            if(rightThread.isAlive() || leftThread.isAlive()){
+
+            } else {
+                rightThread.start();
+            }
         }
         if (gamepad2.dpad_right){
-            robot.Xrail.dropFreightLeft();
+            if(rightThread.isAlive() || leftThread.isAlive()){
+
+            } else {
+                leftThread.start();
+            }
         }
 
       /*  if(gamepad1.dpad_up){
@@ -107,5 +134,24 @@ public class TeleopFreightFrenzy extends FrogOpMode {
        */
 
 
+    }
+}
+
+class servoRightTimer extends Thread{
+    public void run(){
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e){
+
+        }
+    }
+}
+class servoLeftTimer extends Thread{
+    public void run(){
+        try{
+            Thread.sleep(2000);
+        } catch (Exception e){
+
+        }
     }
 }
