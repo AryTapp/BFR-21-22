@@ -4,16 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.opencv.core.Mat;
 
-@Autonomous(name = "blueCarouselAuto")
+@Autonomous(name = "blueWarehouseAuto")
 // Same thing as RedCarousel but just multiply output by -1
-public class BlueCarouselAuto extends CarouselAuto{
+public class BlueWarehouseAuto extends WarehouseAuto{
 
-    public BlueCarouselAuto() {
+    public BlueWarehouseAuto() {
 
     }
+
     public void initialize(){
         setSide(-1);
         super.initialize();
     }
-
 }

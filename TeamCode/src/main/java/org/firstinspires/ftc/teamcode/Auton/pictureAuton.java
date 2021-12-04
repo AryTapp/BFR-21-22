@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
+import android.os.Environment;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.Utility.FrogLinearOpMode;
-import org.firstinspires.ftc.teamcode.Utility.UltimateGoalImageProcessor;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+
+import java.io.File;
 
 
 //Image Inputs:
@@ -24,58 +28,86 @@ public class pictureAuton extends FrogLinearOpMode {
         telemetry.addData("Hardware:", "initialized");
         telemetry.update();
         Mat picture = robot.phone.getMat();
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+//        String filename = "Photo.jpg";
+//        File file = new File(path, filename);
+//        Imgcodecs.imwrite(file.toString(), picture);
+
         telemetry.addData("Photo:","taken");
         telemetry.update();
-        int pos = getPosition(picture);
+        int pos = getPosition(picture, 1);
         telemetry.addData("Position: " , pos);
         telemetry.update();
         while(opModeIsActive()){
 
         }
-
     }
 
-    public int getPosition(Mat img){
+    public int getPosition(Mat img, int side){
         int pixelCount = 0;
         int rightCount = 0;
         int leftCount = 0;
         int errors = 0;
         int width = img.rows();
         int height = img.cols();
-        for(int x = 0; x < width; x+= 5){
-            for(int y = 0; y < height; y+=5){
-                if(y > (3 * height/5)) {
-                    double[] colors = img.get(x,y);
+        //Cropping an image
+        Mat image_output= img.submat(0,width*2/3, 3*height/5, height*9/10);
+        if (side==-1) {
+            image_output= img.submat(width*2/10,width*9/10, 3*height/5, height*9/10);
+        } else {
+            image_output= img.submat(0,width*2/3, 3*height/5, height*9/10);
+        }
+//        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+//        String filename = "Photo_crop.jpg";
+//        File file = new File(path, filename);
+//        Imgcodecs.imwrite(file.toString(), image_output);
+        width = image_output.rows();
+        height  = image_output.cols();
+        //for(int x = 0; x < width; x++){
+            for(int x = 0; x < width; x++){
+                //for(int y = (3 * height/5); y < height; y++){
+            for(int y =0; y < height; y++){
+                    double[] colors = image_output.get(x,y);
                     try {
-                        if (colors[0] < 60 && colors[1] > 75 && colors[2] < 60) {
+                        if ((colors[1] > 50) && (colors[0] < 50) && (colors[2] < 40) ) {
                             pixelCount++;
-                            if (x > (width / 2)) {
+                            if (x < (width/2)) {
                                 rightCount++;
                             } else {
                                 leftCount++;
                             }
                         }
-                    } catch (Exception e){
+                    } catch (Exception e) {
 //                        telemetry.addData("Error:" , e);
 //                        telemetry.addData("x:", x);
 //                        telemetry.addData("y:",y);
 //                        telemetry.update();
                         errors++;
                     }
-                }
             }
         }
         telemetry.addData("Pixel Count", pixelCount);
+        telemetry.addData("Right Pixel Count", rightCount);
+        telemetry.addData("left Pixel Count", leftCount);
         telemetry.addData("Errors: ", errors);
         telemetry.addData("Width: ", width);
         telemetry.addData("Height: ", height);
-
-        if(pixelCount < 200){
-            return 1;
-        } else if(rightCount > leftCount){
-            return 2;
+        if (side == 1) {
+            if (pixelCount < 700) {
+                return 3; //Right
+            } else if (rightCount > leftCount) {
+                return 2; //Middle
+            } else {
+                return 1; //Left
+            }
         } else {
-            return 3;
+            if (pixelCount < 700) {
+                return 3; //Left
+            } else if (rightCount > leftCount) {
+                return 1; //Right
+            } else {
+                return 2; //Middle
+            }
         }
     }
 

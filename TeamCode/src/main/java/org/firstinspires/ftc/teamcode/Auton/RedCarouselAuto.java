@@ -14,16 +14,17 @@ public class RedCarouselAuto extends CarouselAuto{
 
     }
 
-    @Override
-    public void run(){
-        Mat picture = robot.phone.getMat();
-        int pos = getPosition(picture);
-        setSide(pos);
-        telemetry.addData("Position ",pos);
-        super.run();
-
-    }
-    public RedCarouselAuto () {
+//    @Override
+//    public void run(){
+//        Mat picture = robot.phone.getMat();
+//        int pos = getPosition(picture);
+//        setSide(pos);
+//        telemetry.addData("Position ",pos);
+//        super.run();
+//
+//    }
+    public RedCarouselAuto() {
+        setSide(1);
     }
 
     public int getPosition(Mat img){

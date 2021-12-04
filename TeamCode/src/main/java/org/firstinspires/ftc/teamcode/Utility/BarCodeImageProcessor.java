@@ -6,14 +6,12 @@ import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
@@ -29,23 +27,24 @@ import static java.lang.Thread.sleep;
  */
 
 @Config
-public class UltimateGoalImageProcessor {
+public class BarCodeImageProcessor {
 
-    private static UltimateGoalImageProcessor processor = new UltimateGoalImageProcessor();
-    public static UltimateGoalImageProcessor getInstance(){
+    private static BarCodeImageProcessor processor = new BarCodeImageProcessor();
+    public static BarCodeImageProcessor getInstance(){
         return processor;
     }
 
     private int sizeThresh = 70000;
     private int lrTolerance = 10;
     public static double blurAmount = 10;
+    int side =1;
 
 
     static {
 //        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    public UltimateGoalImageProcessor() {
+    public BarCodeImageProcessor() {
     }
 
     public ImageResult process(Mat input) {
@@ -66,7 +65,7 @@ public class UltimateGoalImageProcessor {
 
         List<Mat> bgr = new ArrayList<>();
         Core.split(input, bgr);
-        Mat gray = bgr.get(2);
+        Mat gray = bgr.get(1);
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         filename = "gray.jpg";
         file = new File(path, filename);
@@ -96,33 +95,29 @@ public class UltimateGoalImageProcessor {
         Imgcodecs.imwrite(file.toString(), bwOutput);
 
         ImageResult imageResult = new ImageResult();
-        imageResult.numberOfRings = -1;
+        imageResult.position = -1;
 
-        int topWhiteCount = 0;
-        int bottomWhiteCount = 0;
+        int totalWhiteCount = 0;
 
         for (int i = 0; i < bwOutput.height(); i++) {
             for (int j = 0; j < bwOutput.width(); j++) {
                 double pixelValue = bwOutput.get(i, j)[0];
                 if(pixelValue == 255) {
-                    if(i < bwOutput.height()/2) {
-                        topWhiteCount ++;
-                    }
-                    else {
-                        bottomWhiteCount ++;
-                    }
+                    totalWhiteCount ++;
                 }
             }
         }
 
-        if(topWhiteCount < 2000 && bottomWhiteCount < 2000) {
-            imageResult.numberOfRings = 0;
+        if(side == 1)
+
+        if(totalWhiteCount > 500) {
+            imageResult.position = 1;
         }
-        else if(topWhiteCount > bottomWhiteCount + 500) {
-            imageResult.numberOfRings = 4;
+        else if(totalWhiteCount > 100) {
+            imageResult.position = 2;
         }
         else {
-            imageResult.numberOfRings = 1;
+            imageResult.position = 3;
         }
 
         return imageResult;
