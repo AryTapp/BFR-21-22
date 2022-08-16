@@ -44,7 +44,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.97;
     public static double GEAR_RATIO = 0.5; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 8.36;
+    public static double TRACK_WIDTH = 8.3; //7.32,
 
 
     /*
@@ -64,8 +64,14 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 50;
-    public static double MAX_ACCEL = 30;
+//    public static double MAX_VEL = 50;
+//    public static double MAX_ACCEL = 30;
+//    public static double MAX_ANG_VEL = Math.toRadians(60);
+//    public static double MAX_ANG_ACCEL = Math.toRadians(60);
+
+
+    public static double MAX_VEL = 55;
+    public static double MAX_ACCEL = 32.5;
     public static double MAX_ANG_VEL = Math.toRadians(60);
     public static double MAX_ANG_ACCEL = Math.toRadians(60);
 

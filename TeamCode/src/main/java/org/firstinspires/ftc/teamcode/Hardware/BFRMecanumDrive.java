@@ -62,8 +62,9 @@ public class BFRMecanumDrive extends MecanumDrive implements Subsystem {
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(5.5, 0, 0.5);
 
     //changed multiplier from 1 to 60/55 as robot was strafing to 54 when asked for 60 (Nov, 2021)
+    //changed multiplier from 60/55 to 60/58 as robot was strafing to 65 when asked for 60 (Dec, 2021)
 
-    public static double LATERAL_MULTIPLIER = 60.0/54.0;
+    public static double LATERAL_MULTIPLIER = 60.0/57.0;
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
     public static double OMEGA_WEIGHT = 1;

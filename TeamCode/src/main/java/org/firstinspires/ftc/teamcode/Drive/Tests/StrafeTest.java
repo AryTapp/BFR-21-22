@@ -14,9 +14,9 @@ import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
  * This is a simple routine to test translational drive capabilities.
  */
 @Config
-@Autonomous(group = "drive")
+//@Autonomous(group = "drive")
 public class StrafeTest extends LinearOpMode {
-    public static double DISTANCE = 60; // in
+    public static double DISTANCE = -10.0; // in
 
     @Override
     public void runOpMode() throws InterruptedException {

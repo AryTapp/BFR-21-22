@@ -28,13 +28,13 @@ public class Intake implements Subsystem {
     //overload for intake function
     public void intake(double time, double power){
         intakeMotor.setPower(power * directionSign);
-
-        try {
-            Thread.sleep((long)time);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        intakeMotor.setPower(0);
+//
+//        try {
+//            Thread.sleep((long)time);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//        intakeMotor.setPower(0);
     }
 
 

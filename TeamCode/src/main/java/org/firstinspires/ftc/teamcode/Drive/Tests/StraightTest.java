@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Hardware.BFRMecanumDrive;
  * This is a simple routine to test translational drive capabilities.
  */
 @Config
-@Autonomous(group = "drive")
+//@Autonomous(group = "drive")
 public class StraightTest extends LinearOpMode {
     public static double DISTANCE = 60; // in
 

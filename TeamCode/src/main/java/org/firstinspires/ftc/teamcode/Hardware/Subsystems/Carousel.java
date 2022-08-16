@@ -17,9 +17,7 @@ public class Carousel implements Subsystem{
     @Override
     public void initialize(HardwareMap map, Telemetry telemetry) {
         carousalMotorLeft = map.dcMotor.get(shooterNameL);
-
         carousalMotorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
     }
 
     public void rotateCarousalAuto(double time, double power){
@@ -35,7 +33,7 @@ public class Carousel implements Subsystem{
 
     public void rotateCarousalTeleOp(double power){
         carousalMotorLeft.setPower(power);
-        carousalMotorLeft.setPower(0);
+        //carousalMotorLeft.setPower(0);
     }
     @Override
     public void sendTelemetry(Telemetry telemetry) {

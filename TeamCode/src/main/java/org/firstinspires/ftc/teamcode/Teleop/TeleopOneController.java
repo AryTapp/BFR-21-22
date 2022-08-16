@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Subsystems.xRail;
 import org.firstinspires.ftc.teamcode.Utility.FrogOpMode;
 
-@TeleOp
+//se@TeleOp
 public class TeleopOneController extends FrogOpMode {
     private double intakePower = 1;
     private boolean intakeOn = false;

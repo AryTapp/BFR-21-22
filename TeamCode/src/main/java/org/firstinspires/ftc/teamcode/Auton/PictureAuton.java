@@ -16,7 +16,7 @@ import java.io.File;
 
 
 @Autonomous(name = "pictureAuton")
-public class pictureAuton extends FrogLinearOpMode {
+public class PictureAuton extends FrogLinearOpMode {
     @Override
     public void initialize() {
 
@@ -53,9 +53,9 @@ public class pictureAuton extends FrogLinearOpMode {
         //Cropping an image
         Mat image_output= img.submat(0,width*2/3, 3*height/5, height*9/10);
         if (side==-1) {
-            image_output= img.submat(width*2/10,width*9/10, 3*height/5, height*9/10);
+            image_output= img.submat(width*2/10,width*8/10, 3*height/5, height*9/10);
         } else {
-            image_output= img.submat(0,width*2/3, 3*height/5, height*9/10);
+            image_output= img.submat(0,width*7/10, 3*height/5, height*9/10);
         }
 //        File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 //        String filename = "Photo_crop.jpg";
@@ -63,13 +63,14 @@ public class pictureAuton extends FrogLinearOpMode {
 //        Imgcodecs.imwrite(file.toString(), image_output);
         width = image_output.rows();
         height  = image_output.cols();
+        //BGR format
         //for(int x = 0; x < width; x++){
             for(int x = 0; x < width; x++){
                 //for(int y = (3 * height/5); y < height; y++){
             for(int y =0; y < height; y++){
                     double[] colors = image_output.get(x,y);
                     try {
-                        if ((colors[1] > 50) && (colors[0] < 50) && (colors[2] < 40) ) {
+                        if ((colors[1] > 60) && (colors[2] < 50) && (colors[0]< 60)) {
                             pixelCount++;
                             if (x < (width/2)) {
                                 rightCount++;
